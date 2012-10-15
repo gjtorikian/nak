@@ -1,0 +1,204 @@
+#!/usr/bin/env node
+
+var options = require('commander'),
+    fs = require('fs'),
+    path = require('path'),
+    walk = require('../lib/walkdir');
+
+options
+  .version('0.1.0')
+  .usage('[options] PATTERN PATH')
+  .option('-l, --list', 'list files encountered')
+  .option('-H, --hidden', 'search hidden files and directories (default off)')
+  .option('-c, --color',  'adds color to results  (default off)')
+  .option('-p, --pathToAgignore <file>',  'path to an agignore file')
+  .option('-m, --maxdepth <num>',  'the maximum depth of the search')
+  .option('-q, --literal',  'do not parse PATTERN as a regular expression; match it literally')
+  .option('-w, --word-regexp', 'only match whole words')
+  .option('-i, --ignore-case', 'match case insensitively')
+  .parse(process.argv);
+
+// no args
+
+if (options.args.length < 1) {
+  process.stdout.write(options.helpInformation());
+  process.exit(0);
+}
+
+// arguments
+var fpath = path.resolve(options.args.pop()),
+    query = options.args.length > 0 ? new RegExp('(' + options.args.pop() + ')', 'g') : "",
+    fileColor = "\n", textColor = "", matchColor = "%d: %s";
+
+if (options.color) {
+  fileColor = '\n\033[36m%s\033[0m';
+  textColor = '\033[37;43m$1\033[0;90m';
+  matchColor = '\033[90m%d: %s\033[0m';
+}
+
+// whitespace
+
+var start = new Date();
+process.on('exit', console.log);
+
+var exclusions = dirExclusions = [];
+if (options.pathToAgignore) {
+  exclusions = fs.readFileSync(options.pathToAgignore, "utf-8");
+}
+
+try {
+  dirExclusions = fs.readFileSync(fpath + "/.agignore", "utf-8");
+} catch (e) { };
+
+if (exclusions.length || dirExclusions.length) {
+  options.exclusions = (dirExclusions.length > 0 ? exclusions + dirExclusions : exclusions).split(/\r?\n/).filter(function (e) { return !!e && /^[^#]/.test(e)});
+  options.exclusionsLength = options.exclusions.length;
+}
+
+var end = new Date() - start;
+
+/**
+ * Search `fpath`.
+ *
+ * @param {String} fpath
+ */
+
+//search(fpath);
+//var start = new Date();
+//var wrench = require("wrench")
+//console.log(wrench.readdirSyncRecursive(fpath));
+
+//var paths = walk(fpath);
+//console.log(paths);
+
+var start2 = new Date();
+options.query = query;
+
+if (options.list) {
+  console.log(walk(fpath, options));
+  var end2 = new Date() - start2;
+
+  console.log(end, end2)
+}
+else {
+  // "streaming" output is slow, but serves a purpose when finding text
+  walk(fpath,options,function(file, lines, linesLength){ 
+    console.log(fileColor, file);
+    var line, n, i = 0;
+    for (i; i < linesLength; i++) {
+      line = lines[i];
+      n = line[0]; 
+      line = line[1];
+      if (options.color) line = line.replace(query, textColor);
+      console.log(matchColor, n, line);
+    }
+  });
+  var end2 = new Date() - start2;
+
+  console.log(end, end2)
+}
+
+//
+
+
+/*var emitter = walk(fpath,{"follow_symlinks": false, "max_depth":undefined});
+
+
+
+emitter.on('fail', function(err) {
+  console.error(err);
+  process.exit(1);
+});
+
+emitter.on('end', function(list) {
+  //console.log(list);
+ // //console.log(new Date() - start)
+});
+
+
+emitter.on('file', function(file, stat) {
+  for (var e = 0; e < exclusions.length; e++) {
+    if (gex(exclusions[e]).on(file) !== null)
+      return;
+    else {
+      console.log(exclusions[e])
+      console.log(file)
+      process.exit(1)
+    }
+  }
+  foundFile(file, stat);
+}); */
+/*
+function foundFile(file, stat) {
+  if (program.list) {
+    return console.log(file)
+  }
+  else {
+    if (!isBinaryFile(file)) {
+      var lines = [];
+
+      var str = fs.readFileSync(file, 'utf8');
+      str.split('\n').forEach(function(line, i){
+        if (!re.test(line)) return;
+        lines.push([i, line]);
+      });
+
+      if (lines.length) {
+        console.log(fileColor, file);
+        lines.forEach(function(line){
+          var i = line[0], line = line[1];
+          line = line.replace(re, textColor);
+          console.log(matchColor, i+1, line);
+        });
+      }
+    }
+  }
+}*/
+
+
+/*function search(path) {
+  fs.stat(path, function(err, stat){
+    if (err) throw err;
+    if (!stat.isSymbolicLink() && stat.isDirectory()) {
+      fs.readdir(path, function(err, files){
+        if (err) throw err;
+        files.filter(hidden).map(function(file){
+          return join(path, file);
+        }).forEach(search);
+      });
+    } else if (stat.isFile()) {
+      if (program.list) {
+        console.log(path);
+      }
+      else {
+        var lines = [];
+      fs.readFile(path, 'utf8', function(err, str){
+        if (err) throw err;
+        str.split('\n').forEach(function(line, i){
+          if (!re.test(line)) return;
+          lines.push([i, line]);
+        });
+
+        if (lines.length) {
+          console.log('\n  \033[36m%s\033[0m', path);
+          lines.forEach(function(line){
+            var i = line[0]
+              , line = line[1];
+            line = line.replace(re, '\033[37;43m$1\033[0;90m');
+            console.log('  \033[90m%d: %s\033[0m', i+1, line);
+          });
+        }
+      });
+    }
+    }
+  });
+}*/
+
+/**
+ * Filter hidden paths unless (`--hidden` is used.)
+ */
+
+function hidden(fpath) {
+  if (program.hidden) return true;
+  return '.' != fpath[0];
+}

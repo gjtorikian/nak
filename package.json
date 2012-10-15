@@ -1,0 +1,13 @@
+{
+    "name": "nack",
+    "version": "0.0.1",
+    "description": "'ack'-inspired tool written in Node",
+    "keywords": ["ag", "ack", "grep", "search"],
+    "author": "Garen J. Torikian <gjtorikian@gmail.com>",
+    "dependencies": { 
+    	"commander": "",
+        "async": ""
+    },
+    "bin": { "nack": "./bin/nack" }, 
+    "engines": { "node": ">= 0.6.x" }
+}
