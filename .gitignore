@@ -6,3 +6,4 @@ out/
 node_modules
 npm-debug.log
 v8.log
+out.txt
