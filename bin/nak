@@ -17,6 +17,7 @@ options
   .option('-w, --wordRegexp', 'only match whole words')
   .option('-i, --ignoreCase', 'match case insensitively')
   .option('--piped', 'indicates filenames are being piped in (like, from ag or find)')
+  .option('--c9Format', 'formats the results for cloud9 search')
   .parse(process.argv);
 
 if (process.argv.length == 2) {
@@ -74,13 +75,12 @@ else {
     matchColor = '\033[90m%s';
   }
 
-  // whitespace
-
-  process.on('exit', console.log);
-
-  // set the query up
+  // set the query up, and present a final summary
   if (query) {
     makeQuery(query, replacement);
+    /*process.on('exit', function() {
+      console.log("Found %d matches in %d files", 12, 23)
+    });*/
   }
 
   // let's do this. if we're listing, callback at the end...
