@@ -17,6 +17,7 @@ options
   .option('-q, --literal',  'do not parse PATTERN as a regular expression; match it literally')
   .option('-w, --wordRegexp', 'only match whole words')
   .option('-i, --ignoreCase', 'match case insensitively')
+  .option('--piped', 'indicates data is being piped in')
   .parse(process.argv);
 
 if (process.argv.length == 2) {
@@ -24,22 +25,31 @@ if (process.argv.length == 2) {
   process.exit(1)
 }
 
-// no args
-// but may come from piped stream
-if (options.args.length < 1 && !options.list) {
+setExclusions();
+
+// we're piping data in; that means
+// a query with a possible replace
+// (probably a nicer way to do this, without an explicit argument)
+if (options.piped) {
   process.stdin.resume();
   process.stdin.setEncoding('utf8');
+
+  if (options.args.length > 1)
+    makeQuery(options.args.shift(), options.args.shift());
+  else
+    makeQuery(options.args.shift());
+
   process.stdin.on('data', function(data) {
     options.piped = true;
     walk(data,options,function(file, lines){  
       if (!options.color) {
-        process.stdout.write(file);
-        process.stdout.write(lines);
+        console.log(file);
+        console.log(lines);
       }
       else {
         console.log(fileColor, file);
         lines = lines.replace(query, textColor);
-        process.stdout.write(matchColor, lines);
+        console.log(matchColor, lines);
       }
     });
   });
@@ -48,7 +58,7 @@ else {
   // arguments
   var fpath = path.resolve(options.args.pop()),
       replacement = null,
-      query = "",
+      query = null,
       fileColor = "", textColor = "", matchColor = "";
 
   if (options.args.length > 0) {
@@ -69,32 +79,9 @@ else {
 
   process.on('exit', console.log);
 
-  var exclusions = dirExclusions = [];
-  if (options.pathToAgignore) {
-    exclusions = fs.readFileSync(options.pathToAgignore, "utf-8");
-  }
-
-  try {
-    dirExclusions = fs.readFileSync(fpath + "/.agignore", "utf-8");
-  } catch (e) { };
-
-  if (exclusions.length || dirExclusions.length) {
-    options.exclusions = (dirExclusions.length > 0 ? exclusions + dirExclusions : exclusions).split(/\r?\n/).filter(function (e) { return !!e && /^[^#]/.test(e)});
-    options.exclusionsLength = options.exclusions.length;
-  }
-
-  if (query.length) {
-    var flags = "gs";
-    if (options.literal) 
-      query = XRegExp.escape(query);
-    if (options.ignoreCase)
-      flags += "i";
-
-    options.query = XRegExp( (options.wordRegexp ? "\b(" : "(") + query + (options.wordRegexp ? ")\b" : ")"), flags);
-  
-    if (replacement) {
-      options.replacement = XRegExp( replacement );
-    }
+  // set the query up
+  if (query) {
+    makeQuery(query, replacement);
   }
 
   // let's do this. if we're listing, callback at the end...
@@ -118,5 +105,36 @@ else {
         console.log(matchColor, lines);
       }
     });
+  }
+}
+
+function setExclusions() {
+  var exclusions = dirExclusions = [];
+  if (options.pathToAgignore) {
+    exclusions = fs.readFileSync(options.pathToAgignore, "utf-8");
+  }
+
+  // if there's no .agignore in the current path, don't worry about it.
+  try {
+    dirExclusions = fs.readFileSync(fpath + "/.agignore", "utf-8");
+  } catch (e) { };
+
+  if (exclusions.length || dirExclusions.length) {
+    options.exclusions = (dirExclusions.length > 0 ? exclusions + dirExclusions : exclusions).split(/\r?\n/).filter(function (e) { return !!e && /^[^#]/.test(e)});
+    options.exclusionsLength = options.exclusions.length;
+  }
+};
+
+function makeQuery(query, replacement) {
+  var flags = "gs";
+  if (options.literal) 
+    query = XRegExp.escape(query);
+  if (options.ignoreCase)
+    flags += "i";
+
+  options.query = XRegExp( (options.wordRegexp ? "\b(" : "") + query + (options.wordRegexp ? ")\b" : ""), flags);
+
+  if (replacement) {
+    options.replacement = replacement;
   }
 }
