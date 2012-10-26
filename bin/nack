@@ -47,7 +47,7 @@ if (options.args.length < 1 && !options.list) {
 else {
   // arguments
   var fpath = path.resolve(options.args.pop()),
-      replacement = "",
+      replacement = null,
       query = "",
       fileColor = "", textColor = "", matchColor = "";
 
@@ -92,7 +92,7 @@ else {
 
     options.query = XRegExp( (options.wordRegexp ? "\b(" : "(") + query + (options.wordRegexp ? ")\b" : ")"), flags);
   
-    if (replacement.length) {
+    if (replacement) {
       options.replacement = XRegExp( replacement );
     }
   }
