@@ -6,7 +6,9 @@
     "author": "Garen J. Torikian <gjtorikian@gmail.com>",
     "dependencies": { 
     	"commander": "",
-        "xregexp": ""
+        "xregexp": "",
+        "async": "",
+        "isbinaryfile": ""
     },
     "bin": { "nack": "./bin/nack" }, 
     "engines": { "node": ">= 0.6.x" }

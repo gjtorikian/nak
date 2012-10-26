@@ -8,7 +8,7 @@ var options = require('commander'),
 
 options
   .version('0.1.0')
-  .usage("[options] 'PATTERN' ['REPLACEMENT'] PATH")
+  .usage("[options] 'PATTERN' ['REPLACEMENT'] 'PATH'")
   .option('-l, --list', 'list files encountered')
   .option('-H, --hidden', 'search hidden files and directories (default off)')
   .option('-c, --color',  'adds color to results  (default off)')
@@ -17,74 +17,94 @@ options
   .option('-q, --literal',  'do not parse PATTERN as a regular expression; match it literally')
   .option('-w, --wordRegexp', 'only match whole words')
   .option('-i, --ignoreCase', 'match case insensitively')
+  .option('--replace <string>', 'given a file, replace PATTERN with the string replacement')
   .parse(process.argv);
 
-// no args
-
-if (options.args.length < 1) {
+if (process.argv.length == 2) {
   process.stdout.write(options.helpInformation());
-  process.exit(0);
+  process.exit(1)
 }
 
-// arguments
-var fpath = path.resolve(options.args.pop()),
-    query = options.args.length > 0 ? options.args.pop() : "", 
-    fileColor = "", textColor = "", matchColor = "";
-
-if (options.color) {
-  fileColor = '\n\033[36m%s\033[0m';
-  textColor = '\033[37;43m$1\033[0;90m';
-  matchColor = '\033[90m%s';
-}
-
-// whitespace
-
-process.on('exit', console.log);
-
-var exclusions = dirExclusions = [];
-if (options.pathToAgignore) {
-  exclusions = fs.readFileSync(options.pathToAgignore, "utf-8");
-}
-
-try {
-  dirExclusions = fs.readFileSync(fpath + "/.agignore", "utf-8");
-} catch (e) { };
-
-if (exclusions.length || dirExclusions.length) {
-  options.exclusions = (dirExclusions.length > 0 ? exclusions + dirExclusions : exclusions).split(/\r?\n/).filter(function (e) { return !!e && /^[^#]/.test(e)});
-  options.exclusionsLength = options.exclusions.length;
-}
-
-/**
- * Search `fpath`.
- *
- * @param {String} fpath
- */
-
-var start2 = new Date();
-
-if (query.length) {
-  var flags = "gs";
-  if (options.literal) 
-    query = XRegExp.escape(query);
-  if (options.ignoreCase)
-    flags += "i";
-
-  options.query = XRegExp( (options.wordRegexp ? "\b(" : "(") + query + (options.wordRegexp ? ")\b" : ")"), flags);
-}
-
-if (options.list) {
-  console.log(walk(fpath, options));
+// no args
+// but may come from piped stream
+if (options.args.length < 1 && !options.list) {
+  process.stdin.resume();
+  process.stdin.setEncoding('utf8');
+  process.stdin.on('data', function(data) {
+    options.piped = true;
+    walk(data,options,function(file, lines){  
+      if (!options.color) {
+        process.stdout.write(file);
+        process.stdout.write(lines);
+      }
+      else {
+        console.log(fileColor, file);
+        lines = lines.replace(query, textColor);
+        process.stdout.write(matchColor, lines);
+      }
+    });
+  });
 }
 else {
-  // "streaming" output like this is slower, 
-  // but serves a purpose when finding text
-  walk(fpath,options,function(file, lines){ 
-    console.log(fileColor, file);
-    if (options.color) lines = lines.replace(query, textColor);
-    console.log(matchColor, lines);
-  });
-  var end2 = new Date() - start2;
+  // arguments
+  var fpath = path.resolve(options.args.pop()),
+      query = options.args.length > 0 ? options.args.pop() : "", 
+      fileColor = "", textColor = "", matchColor = "";
 
-  console.log(end2)
+  if (options.color) {
+    fileColor = '\n\033[36m%s\033[0m';
+    textColor = '\033[37;43m$1\033[0;90m';
+    matchColor = '\033[90m%s';
+  }
+
+  // whitespace
+
+  process.on('exit', console.log);
+
+  var exclusions = dirExclusions = [];
+  if (options.pathToAgignore) {
+    exclusions = fs.readFileSync(options.pathToAgignore, "utf-8");
+  }
+
+  try {
+    dirExclusions = fs.readFileSync(fpath + "/.agignore", "utf-8");
+  } catch (e) { };
+
+  if (exclusions.length || dirExclusions.length) {
+    options.exclusions = (dirExclusions.length > 0 ? exclusions + dirExclusions : exclusions).split(/\r?\n/).filter(function (e) { return !!e && /^[^#]/.test(e)});
+    options.exclusionsLength = options.exclusions.length;
+  }
+
+  if (query.length) {
+    var flags = "gs";
+    if (options.literal) 
+      query = XRegExp.escape(query);
+    if (options.ignoreCase)
+      flags += "i";
+
+    options.query = XRegExp( (options.wordRegexp ? "\b(" : "(") + query + (options.wordRegexp ? ")\b" : ")"), flags);
+  }
+
+  // let's do this. if we're listing, callback at the end...
+  if (options.list) {
+    walk(fpath, options, function(lines) {
+      console.log(lines);
+    });
+  }
+  // otherwise, we're searching, so pump out results as they come.
+  // "streaming" output like this is slower (because console.log blocks)
+  // but serves a purpose when finding text
+  else {
+    walk(fpath,options,function(file, lines){  
+      if (!options.color) {
+        console.log(file);
+        console.log(lines);
+      }
+      else {
+        console.log(fileColor, file);
+        lines = lines.replace(query, textColor);
+        console.log(matchColor, lines);
+      }
+    });
+  }
 }
