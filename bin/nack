@@ -17,7 +17,6 @@ options
   .option('-q, --literal',  'do not parse PATTERN as a regular expression; match it literally')
   .option('-w, --wordRegexp', 'only match whole words')
   .option('-i, --ignoreCase', 'match case insensitively')
-  .option('--replace <string>', 'given a file, replace PATTERN with the string replacement')
   .parse(process.argv);
 
 if (process.argv.length == 2) {
@@ -48,9 +47,18 @@ if (options.args.length < 1 && !options.list) {
 else {
   // arguments
   var fpath = path.resolve(options.args.pop()),
-      query = options.args.length > 0 ? options.args.pop() : "", 
+      replacement = "",
+      query = "",
       fileColor = "", textColor = "", matchColor = "";
 
+  if (options.args.length > 0) {
+    if (options.args.length == 1)
+      query = options.args.pop();
+    else {
+      replacement = options.args.pop();
+      query = options.args.pop();
+    }
+  }
   if (options.color) {
     fileColor = '\n\033[36m%s\033[0m';
     textColor = '\033[37;43m$1\033[0;90m';
@@ -83,6 +91,10 @@ else {
       flags += "i";
 
     options.query = XRegExp( (options.wordRegexp ? "\b(" : "(") + query + (options.wordRegexp ? ")\b" : ")"), flags);
+  
+    if (replacement.length) {
+      options.replacement = XRegExp( replacement );
+    }
   }
 
   // let's do this. if we're listing, callback at the end...

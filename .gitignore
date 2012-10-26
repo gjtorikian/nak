@@ -7,5 +7,5 @@ node_modules
 npm-debug.log
 v8.log
 out.txt
-file4_replacing
-file5_replacing.gif
+tests/file4_replacing
+tests/file5_replacing.gif
