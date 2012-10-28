@@ -4,6 +4,7 @@ var options = require('commander'),
     fs = require('fs'),
     path = require('path'),
     walk = require('../lib/walkdir'),
+    ignorer = require('../lib/ignorer'),
     XRegExp = require('xregexp').XRegExp;
 
 options
@@ -16,7 +17,8 @@ options
   .option('-q, --literal',  'do not parse PATTERN as a regular expression; match it literally')
   .option('-w, --wordRegexp', 'only match whole words')
   .option('-i, --ignoreCase', 'match case insensitively')
-  .option('-G, --fileSearch <pattern>', 'comma-separated list of files to search on')
+  .option('-G, --fileSearch <pattern>', 'comma-separated list of wildcard files to only search on')
+  .option('--ignore <pattern>', 'comma-separated list of wildcard files to additionally ignore')
   .option('--piped', 'indicates filenames are being piped in (like, from ag or find)')
   .option('--c9Format', 'formats the results for cloud9 search')
   .parse(process.argv);
@@ -74,22 +76,17 @@ else {
     matchColor = '\033[90m%s';
   }
 
-  if (options.fileSearch) {
-    options.validFiles = options.fileSearch.split(",");
-    options.validFiles = options.validFiles.map(function (fileCheck) {
-      return new RegExp(fileCheck);
-    })
-    options.validFilesLength = options.validFiles.length;
-  }
+  options.filesInclude = options.fileSearch ? ignorer.makeWildcardRegExp(options.fileSearch, true) : new RegExp(".*");
 
   setExclusions(fpath);
 
   // set the query up, and present a final summary
   if (query) {
     makeQuery(query, replacement);
-    /*process.on('exit', function() {
-      console.log("Found %d matches in %d files", 12, 23)
-    });*/
+    process.on('exit', function() {
+      if (!options.c9Format)
+        console.log("Found %d matches in %d files", 12, 23)
+    });
   }
 
   // let's do this. if we're listing, callback at the end...
@@ -127,8 +124,10 @@ function setExclusions(fpath) {
     dirExclusions = fs.readFileSync(fpath + "/.agignore", "utf-8");
   } catch (e) { };
 
-  if (exclusions.length || dirExclusions.length) {
-    options.exclusions = (dirExclusions.length > 0 ? exclusions + "\n" + dirExclusions : exclusions).split(/\r?\n/).filter(function (e) { return !!e && /^[^#]/.test(e)});
+  var combinedExclusions = exclusions + "\n" + dirExclusions + "\n" + options.ignore;
+
+  if (combinedExclusions.length) {
+    options.exclusions = combinedExclusions.split(/\r?\n/).filter(function (e) { return !!e && /^[^#]/.test(e)});
     options.exclusionsLength = options.exclusions.length;
   }
 };
