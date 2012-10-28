@@ -15,3 +15,12 @@ long as it's faster than ack, I'm pleased.
 # Benchmarks
 
 And fast it is. I ran this against the [Cloud9 core](http://www.github.com/ajaxorg/cloud9) directory, some 33,000 files.
+
+
+# Testing
+
+All tests (and comparissons to ag) can be found here:
+
+<https://github.com/ajaxorg/cloud9/tree/master/plugins-server/cloud9.ide.filelist>
+
+<https://github.com/ajaxorg/cloud9/tree/master/plugins-server/cloud9.ide.search>
