@@ -4,8 +4,7 @@ var options = require('commander'),
     fs = require('fs'),
     path = require('path'),
     walk = require('../lib/walkdir'),
-    ignorer = require('../lib/ignorer'),
-    XRegExp = require('xregexp').XRegExp;
+    ignorer = require('../lib/ignorer');
 
 options
   .usage("[options] 'PATTERN' ['REPLACEMENT'] 'PATH'")
@@ -133,16 +132,16 @@ function setExclusions(fpath) {
 };
 
 function makeQuery(query, replacement) {
-  var flags = "gs";
+  var flags = "g";
   if (options.literal) 
-    query = XRegExp.escape(query);
+    query = ignorer.escapeRegExp(query);
   if (options.ignoreCase)
     flags += "i";
 
   if (options.wordRegexp)
     query = "\\b(?:" + query + ")\\b";
 
-  options.query = XRegExp( query, flags);
+  options.query = new RegExp(query, flags);
 
   if (replacement) {
     options.replacement = replacement;
