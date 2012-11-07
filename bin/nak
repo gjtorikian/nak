@@ -123,7 +123,7 @@ function setExclusions(fpath) {
     dirExclusions = fs.readFileSync(fpath + "/.agignore", "utf-8");
   } catch (e) { };
 
-  var combinedExclusions = exclusions + "\n" + dirExclusions + "\n" + options.ignore;
+  var combinedExclusions = exclusions + "\n" + dirExclusions + "\n" + (options.ignore !== undefined ? options.ignore : "");
 
   if (combinedExclusions.length) {
     options.exclusions = combinedExclusions.split(/\r?\n/).filter(function (e) { return !!e && /^[^#]/.test(e)});
