@@ -9,12 +9,12 @@ var nakPath = "node ../bin/nak";
 var options1 = [
         "-l",
         "-H",
-        "-p ../.agignore",
+        "-p ../.nakignore",
         basePath
     ],
     options2 = [
         "-l",
-        "-p ../.agignore",
+        "-p ../.nakignore",
         basePath
     ];
 

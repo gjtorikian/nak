@@ -8,46 +8,46 @@ var basePath = __dirname + "/search_fixtures";
 var nakPath = "node ../bin/nak";
 
 var options1 = [
-        "-p ../.agignore",
+        "-p ../.nakignore",
         "-i",
         "-q",
         "'sriracha'", 
         basePath
     ],
     options2 = [
-        "-p ../.agignore",
+        "-p ../.nakignore",
         "-q",
         "'Messenger'",
         basePath
     ],
     options3 = [
-        "-p ../.agignore",
+        "-p ../.nakignore",
         "-q",
         "-w",
         "'gastro'",
         basePath
     ],
     options4 = [
-        "-p ../.agignore",
+        "-p ../.nakignore",
         "-i",
         "'pb.'",
         basePath
     ],
     options5 = [
-        "-p ../.agignore",
+        "-p ../.nakignore",
         "-H",
         "'.+wave'",
         basePath
     ],
     options6 = [
-        "-p ../.agignore",
+        "-p ../.nakignore",
         "-G '*.txt, file*.gif'",
         "-i",
         "'shorts'",
         basePath
     ],
     options7 = [
-        "-p ../.agignore",
+        "-p ../.nakignore",
         "--ignore 'file*.txt'",
         "'williamsburg'",
         "-H",
@@ -61,7 +61,7 @@ describe("search", function() {
             console.error(err);
             console.error(stderr);
         }
-        
+
         var lines = stdout.split("\n");
         var msgLine = lines[lines.length - 2].split(" "); 
         var count = msgLine[1];
@@ -135,7 +135,7 @@ describe("search", function() {
        });
     });
 
-    it("should find matches with a regexp, case-sensitive ON, including the default .agignore file, and hidden files",  function(next) {
+    it("should find matches with a regexp, case-sensitive ON, including the default .nakignore file, and hidden files",  function(next) {
        Exec(nakPath + " " + options5.join(" "), function(err, stdout, stderr) {
         if (err || stderr) {
             console.error(err);

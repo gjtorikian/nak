@@ -1,4 +1,4 @@
-Like file 7 in that it contains all other files, but it should be blocked by this directory's .agignore.
+Like file 7 in that it contains all other files, but it should be blocked by this directory's .nakignore.
 
 It will never show up!
 

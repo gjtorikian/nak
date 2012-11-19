@@ -1,31 +1,10 @@
 #!/usr/bin/env node
 
-var options = require('commander'),
+var options = require("../lib/options").parseArgs(),
     fs = require('fs'),
     path = require('path'),
     walk = require('../lib/walkdir'),
     ignorer = require('../lib/ignorer');
-
-options
-  .usage("[options] 'PATTERN' ['REPLACEMENT'] 'PATH'")
-  .option('-l, --list', 'list files encountered')
-  .option('-H, --hidden', 'search hidden files and directories (default off)')
-  .option('-c, --color',  'adds color to results  (default off)')
-  .option('-p, --pathToAgignore <file>',  'path to an additional agignore file')
-  .option('-m, --maxdepth <num>',  'the maximum depth of the search')
-  .option('-q, --literal',  'do not parse PATTERN as a regular expression; match it literally')
-  .option('-w, --wordRegexp', 'only match whole words')
-  .option('-i, --ignoreCase', 'match case insensitively')
-  .option('-G, --fileSearch <pattern>', 'comma-separated list of wildcard files to only search on')
-  .option('--ignore <pattern>', 'comma-separated list of wildcard files to additionally ignore')
-  .option('--piped', 'indicates filenames are being piped in (like, from ag or find)')
-  .option('--c9Format', 'formats the results for cloud9 search')
-  .parse(process.argv);
-
-if (process.argv.length == 2) {
-  process.stdout.write(options.helpInformation());
-  process.exit(1)
-}
 
 // we're piping data in; that means
 // a query with a possible replace
@@ -61,14 +40,13 @@ else {
       query = null,
       fileColor = "", textColor = "", matchColor = "";
 
-  if (options.args.length > 0) {
-    if (options.args.length == 1)
-      query = options.args.pop();
-    else {
-      replacement = options.args.pop();
-      query = options.args.pop();
-    }
+  if (options.args.length == 1)
+    query = options.args.pop();
+  else if (options.args.length == 2) {
+    replacement = options.args.pop();
+    query = options.args.pop();
   }
+
   if (options.color) {
     fileColor = '\n\033[36m%s\033[0m';
     textColor = '\033[37;43m\1\033[0;90m';
@@ -113,8 +91,8 @@ else {
 
 function setExclusions(fpath) {
   var exclusions = dirExclusions = [];
-  if (options.pathToAgignore) {
-    exclusions = fs.readFileSync(options.pathToAgignore, "utf-8");
+  if (options.pathToNakignore) {
+    exclusions = fs.readFileSync(options.pathToNakignore, "utf-8");
   }
 
   // if there's no .agignore in the current search path, don't worry about it.
