@@ -15,12 +15,14 @@ function concat(opts) {
 
 	out = out.join("\n");
 
-	out = out.replace(/require\(.+\/?options[\"\']\)/, "parser")
-			 .replace(/require\(.+\/?walkdir[\"\']\)/, "walker")
-			 .replace(/require\(.+\/?async[\"\']\)/, "async")
-			 .replace(/require\(.+\/?ignorer[\"\']\)/, "ignorer")
-			 .replace(/require\(.+\/?isbinaryfile[\"\']\)/, "isbinaryfile")
+	out = out.replace(/require\(.+\/?isbinaryfile[\"\']\)/, "isbinaryfile")
 			 .replace("module.exports = function(bytes, size) {", "isbinaryfile = function(bytes, size) {")
+			 
+			 .replace(/require\(.+\/?ignorer[\"\']\)/, "ignorer")
+			 .replace(/require\(.+\/?mergesort[\"\']\)/, "mergesort")
+			 .replace(/require\(.+\/?options[\"\']\)/, "parser")
+			 .replace(/require\(.+\/?walkdir[\"\']\)/, "walker")
+			 
 			 .replace("#!/usr/bin/env node", "");
 
 	fs.writeFileSync(destPath, out, FILE_ENCODING);
@@ -29,7 +31,9 @@ function concat(opts) {
 }
 
 var concatedFiles = concat({
-	src : ["node_modules/isbinaryfile/index.js", "lib/async.js", "lib/ignorer.js", "lib/options.js", "lib/walkdir.js", "bin/nak"],
+	src : ["node_modules/isbinaryfile/index.js", 
+		   "lib/mergesort.js", "lib/ignorer.js", "lib/options.js", "lib/walkdir.js", 
+		   "bin/nak"],
 	dest : 'build/nak.concat.js'
 });
 
