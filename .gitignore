@@ -12,6 +12,5 @@ out2.txt
 .settings
 command.txt
 cloud9infra/
-benchmark/ack
-benchmark/ag
+benchmark/
 build/
