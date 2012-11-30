@@ -41,7 +41,7 @@ Here are benchmarks for finding the phrase "va" in cloud9infra, as a whole-word 
 ---------|----------|-----------|---------
 34.609s  | 29.327s  | 88.883s   | 256.14s
 
-Obviously, part of the speed impediment to `ack` or `grep` is the lack of a _simple_ way to provide ignore rules.
+Obviously, part of the speed impediment to `ack` or `grep` is the lack of a _simple_ way to provide ignore rules. In addition, `ag` isn't really meant for a `find` replacement, which could explain the first table's results.
 
 # Testing
 
