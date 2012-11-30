@@ -65,7 +65,7 @@ else {
     makeQuery(query, replacement);
     var matches = 0, filecount = 0;
 
-    walkdir(fpath,options,function(file, lines, _matches) {  
+    walkdir(fpath, options, function(file, lines, _matches) {  
       if (!options.color) {
         console.log(file + ":");
         console.log(lines);
@@ -78,9 +78,8 @@ else {
 
       matches += _matches;
       filecount++;
-    });
-    process.on('exit', function() {
-      console.log("Found %d matches in %d files", matches, filecount);
+    }, function() {
+      console.log("Found " + matches + (matches == 1 ? " match" : " matches")  + " in " + filecount + (filecount == 1 ? " file " : " files ")); 
     });
   }
   // if we're listing, callback at the very end

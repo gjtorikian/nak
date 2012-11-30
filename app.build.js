@@ -1,56 +1,62 @@
-// from https://github.com/posabsolute/small-build-script-with-node
-
-var FILE_ENCODING = 'utf-8';
-
 var fs = require('fs');
 
 function concat(opts) {
-
 	var fileList = opts.src;
 	var destPath = opts.dest;
+	var vfsDestPath = opts.vfsDest;
 
-	var out = fileList.map(function(filePath){
-		return fs.readFileSync(filePath, FILE_ENCODING);
+	var src = fileList.map(function(filePath){
+		return fs.readFileSync(filePath, "utf-8");
 	});
 
-	out = out.join("\n");
+	src = src.join("\n");
 
-	out = out.replace(/require\(.+\/?isbinaryfile[\"\']\)/, "isbinaryfile")
+	// resolve requires inline
+	src = src.replace(/require\(.+\/?isbinaryfile[\"\']\)/, "isbinaryfile")
 			 .replace("module.exports = function(bytes, size) {", "isbinaryfile = function(bytes, size) {")
 			 
-			 .replace(/require\(.+\/?ignorer[\"\']\)/, "ignorer")
-			 .replace(/require\(.+\/?mergesort[\"\']\)/, "mergesort")
-			 .replace(/require\(.+\/?options[\"\']\)/, "parser")
-			 .replace(/require\(.+\/?walkdir[\"\']\)/, "walker")
+			 .replace(/require\(.+\/?ignorer[\"\']\)/g, "ignorer")
+			 .replace(/require\(.+\/?mergesort[\"\']\)/g, "mergesort")
+			 .replace(/require\(.+\/?options[\"\']\)/g, "parser")
+			 .replace(/require\(.+\/?walkdir[\"\']\)/g, "walker")
 			 
 			 .replace("#!/usr/bin/env node", "");
 
-	fs.writeFileSync(destPath, out, FILE_ENCODING);
-	//console.log(' '+ destPath +' built.');
-	return out;
+	fs.writeFileSync(destPath, src, "utf-8");
+
+	// do some magic to turn this into a vfs extension
+	var vfsPrefix = "module.exports = function (vfs, register) { \n" +
+					"\tregister(null, { \n" + 
+					"\texecute: function (passedArgs, callback) { \n";
+
+	var vfsSuffix = "\t}\n" +
+					"  \t}); \n" +
+					"};";
+
+	var vfsSrc = vfsPrefix + src.replace("parser.parseArgs()", "parser.parseArgs(passedArgs)")
+					.replace(/console\.log\(/g, "callback(null, ") + vfsSuffix;
+
+	fs.writeFileSync(vfsDestPath, vfsSrc, "utf-8");
+
+	return { src: src, vfsSrc: vfsSrc };
+}
+
+function uglify(src, destPath) {
+	 var uglify = require("uglify-js");
+	 
+	 fs.writeFileSync(destPath, uglify.minify(src, {fromString: true}).code, "utf-8");
+	 console.log(destPath +' built.');
 }
 
 var concatedFiles = concat({
 	src : ["node_modules/isbinaryfile/index.js", 
 		   "lib/mergesort.js", "lib/ignorer.js", "lib/options.js", "lib/walkdir.js", 
 		   "bin/nak"],
-	dest : 'build/nak.concat.js'
+	dest : 'build/nak.concat.js',
+	vfsDest : 'build/nak.vfs_concat.js'
 });
 
-function uglify(src, destPath) {
-	 var
-		uglyfyJS = require('uglify-js'),
-		jsp = uglyfyJS.parser,
-		pro = uglyfyJS.uglify,
-		ast = jsp.parse( src );
-
-	 ast = pro.ast_mangle(ast);
-	 ast = pro.ast_squeeze(ast);
-
-	 fs.writeFileSync(destPath, pro.gen_code(ast), FILE_ENCODING);
-	 console.log(' '+ destPath +' built.');
-}
-
-uglify(concatedFiles, 'build/nak.min.js');
+uglify(concatedFiles.src, 'build/nak.min.js');
+uglify(concatedFiles.vfsSrc, 'build/nak.vfs_min.js');
 
 console.log("and we're done");
