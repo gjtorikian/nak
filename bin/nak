@@ -3,8 +3,9 @@
 var options = require("../lib/options").parseArgs(),
     fs = require('fs'),
     path = require('path'),
-    walk = require('../lib/walkdir'),
+    walkdir = require('../lib/walkdir').walkdir,
     ignorer = require('../lib/ignorer');
+
 
 // we're piping data in; that means
 // a query with a possible replace
@@ -20,7 +21,7 @@ if (options.piped) {
 
   process.stdin.on('data', function(data) {
     options.piped = true;
-    walk(data,options,function(file, lines){  
+    walkdir(data,options,function(file, lines){  
       if (!options.color) {
         console.log(file);
         console.log(lines);
@@ -53,7 +54,7 @@ else {
     matchColor = '\033[90m%s';
   }
 
-  options.filesInclude = options.fileSearch ? ignorer.makeWildcardRegExp(options.fileSearch, true) : new RegExp(".*");
+  options.filesInclude = options.fileSearch ? ignorer.makeWildcardRegExp(options.fileSearch, true) : { test: function(){ return true }};
 
   setExclusions(fpath);
 
@@ -63,7 +64,8 @@ else {
   if (query) {
     makeQuery(query, replacement);
     var matches = 0, filecount = 0;
-    walk(fpath,options,function(file, lines, _matches) {  
+
+    walkdir(fpath, options, function(file, lines, _matches) {  
       if (!options.color) {
         console.log(file + ":");
         console.log(lines);
@@ -76,14 +78,13 @@ else {
 
       matches += _matches;
       filecount++;
-    });
-    process.on('exit', function() {
-      console.log("Found %d matches in %d files", matches, filecount);
+    }, function() {
+      console.log("Found " + matches + (matches == 1 ? " match" : " matches")  + " in " + filecount + (filecount == 1 ? " file " : " files ")); 
     });
   }
   // if we're listing, callback at the very end
   else if (options.list) {
-    walk(fpath, options, function(lines) {
+    walkdir(fpath, options, function(lines) {
       console.log(lines);
     });
   }
@@ -95,9 +96,9 @@ function setExclusions(fpath) {
     exclusions = fs.readFileSync(options.pathToNakignore, "utf-8");
   }
 
-  // if there's no .agignore in the current search path, don't worry about it.
+  // if there's no .nakignore in the current search path, don't worry about it.
   try {
-    dirExclusions = fs.readFileSync(fpath + "/.agignore", "utf-8");
+    dirExclusions = fs.readFileSync(fpath + "/.nakignore", "utf-8");
   } catch (e) { };
 
   var combinedExclusions = exclusions + "\n" + dirExclusions + "\n" + (options.ignore !== undefined ? options.ignore : "");

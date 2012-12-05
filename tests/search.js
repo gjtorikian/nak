@@ -6,48 +6,49 @@ var Exec = require("child_process").exec;
 var basePath = __dirname + "/search_fixtures";
 
 var nakPath = "node ../bin/nak";
+//var nakPath = "node ../build/nak.min";
 
 var options1 = [
-        "-p ../.nakignore",
+        "-a ../.nakignore",
         "-i",
         "-q",
         "'sriracha'", 
         basePath
     ],
     options2 = [
-        "-p ../.nakignore",
+        "-a ../.nakignore",
         "-q",
         "'Messenger'",
         basePath
     ],
     options3 = [
-        "-p ../.nakignore",
+        "-a ../.nakignore",
         "-q",
         "-w",
         "'gastro'",
         basePath
     ],
     options4 = [
-        "-p ../.nakignore",
+        "-a ../.nakignore",
         "-i",
         "'pb.'",
         basePath
     ],
     options5 = [
-        "-p ../.nakignore",
+        "-a ../.nakignore",
         "-H",
         "'.+wave'",
         basePath
     ],
     options6 = [
-        "-p ../.nakignore",
+        "-a ../.nakignore",
         "-G '*.txt, file*.gif'",
         "-i",
         "'shorts'",
         basePath
     ],
     options7 = [
-        "-p ../.nakignore",
+        "-a ../.nakignore",
         "--ignore 'file*.txt'",
         "'williamsburg'",
         "-H",
@@ -66,7 +67,7 @@ describe("search", function() {
         var msgLine = lines[lines.length - 2].split(" "); 
         var count = msgLine[1];
         var filecount = msgLine[4];
-
+        
         Assert.equal(count, 8);
         Assert.equal(filecount, 4);
         Assert.equal(lines.length, 16);
