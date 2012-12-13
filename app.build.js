@@ -53,10 +53,10 @@ var concatedFiles = concat({
 		   "lib/mergesort.js", "lib/ignorer.js", "lib/options.js", "lib/walkdir.js", 
 		   "bin/nak"],
 	dest : 'build/nak.concat.js',
-	vfsDest : 'build/nak.vfs_concat.js'
+	vfsDest : 'build/nak.vfs.concat.js'
 });
 
 uglify(concatedFiles.src, 'build/nak.min.js');
-uglify(concatedFiles.vfsSrc, 'build/nak.vfs_min.js');
+uglify(concatedFiles.vfsSrc, 'build/nak.vfs.min.js');
 
 console.log("and we're done");

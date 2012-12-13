@@ -47,6 +47,12 @@ Obviously, part of the speed impediment to `ack` or `grep` is the lack of a _sim
 
 All tests can be found in _tests_; they use [`mocha`](http://visionmedia.github.com/mocha/) to run. Just call `mocha filelist` or `mocha search`.
 
+# Builds
+
+Just call `node app.build.js` from the root directory to generate a build. You'll need to `npm install uglify-js` first. 
+
+You'll get several files: one is nak minifed, and the other is a minifed version of nak that is suitable for use with [VFS-Local](https://github.com/c9/vfs-local). The API and argument consumption for VFS local is the exact same; just make sure you call `api.execute` within the callback for `vfs.extend`.
+
 # History
 
 For a deeper discussion on this tool versus `ag`, `find`, and `grep`, see [this discussion](https://github.com/ajaxorg/cloud9/pull/2369) into Cloud9.
