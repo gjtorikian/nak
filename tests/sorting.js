@@ -34,9 +34,9 @@ describe("search", function() {
                        "n_folder/www/a.txt\n" +
                        "p_folder/a.txt\n" +
                        "p_folder/c.txt\n" +
-                       "p_folder/b_folder/l.txt\n" + '';
-        
-        Assert.equal(lines.length, 11);
+                       "p_folder/b_folder/l.txt\n" + '\n' + ''; // gotta do something about this...
+
+        Assert.equal(lines.length, 12);
         Assert.equal(stdout.replace(new RegExp(fpath + "/", "g"), ""), expected);
 
         next();
