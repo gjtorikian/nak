@@ -79,7 +79,8 @@ else {
       matches += _matches;
       filecount++;
     }, function() {
-      console.log("Found " + matches + (matches == 1 ? " match" : " matches")  + " in " + filecount + (filecount == 1 ? " file " : " files ")); 
+      if (!options.json)
+        console.log("Found " + matches + (matches == 1 ? " match" : " matches")  + " in " + filecount + (filecount == 1 ? " file " : " files ")); 
     });
   }
   // if we're listing, callback at the very end

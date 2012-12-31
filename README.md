@@ -49,9 +49,27 @@ All tests can be found in _tests_; they use [`mocha`](http://visionmedia.github.
 
 # Builds
 
-Just call `node app.build.js` from the root directory to generate a build. You'll need to `npm install uglify-js` first. 
+Just call `node compile.js` from the root directory to generate a build. You'll need to `npm install uglify-js` first. 
 
 You'll get several files: one is nak minifed, and the other is a minifed version of nak that is suitable for use with [VFS-Local](https://github.com/c9/vfs-local). The API and argument consumption for VFS local is the exact same; just make sure you call `api.execute` within the callback for `vfs.extend`.
+
+#Options
+
+```
+Options:
+      -l|--list             list files encountered
+      -H|--hidden           search hidden files and directories (default off)
+      -c|--color            adds color to results  (default off)
+      -a|--pathToNakignore «value»  path to an additional nakignore file
+      -m|--maxdepth «value» the maximum depth of the search
+      -q|--literal          do not parse PATTERN as a regular expression; match it literally
+      -w|--wordRegexp       only match whole words
+      -i|--ignoreCase       match case insensitively
+      -G|--fileSearch «value»   comma-separated list of wildcard files to only search on
+      -d|--ignore «value»   comma-separated list of wildcard files to additionally ignore
+      -p|--piped            indicates filenames are being piped in (like, from ag or find)
+      -j|--json             returns results as JSON; these are NOT sorted. it's also a little slower.
+```
 
 # History
 
