@@ -9,8 +9,9 @@
     },
     "devDependencies": {
         "uglify-js": "",
-        "exec-sync": ""
+        "exec-sync": "",
+        "mocha": ""
     },
     "bin": { "nak": "./bin/nak" }, 
-    "engines": { "node": ">= 0.6.x" }
+    "engines": { "node": ">= 0.8.x" }
 }
