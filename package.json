@@ -13,5 +13,9 @@
         "mocha": ""
     },
     "bin": { "nak": "./bin/nak" }, 
-    "engines": { "node": ">= 0.8.x" }
+    "engines": { "node": ">= 0.8.x" },
+    "repository" :
+      { "type" : "git",
+        "url" : "http://github.com/gjtorikian/nak.git"
+      }
 }
