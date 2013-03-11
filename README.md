@@ -45,7 +45,13 @@ Obviously, part of the speed impediment to `ack` or `grep` is the lack of a _sim
 
 # Testing
 
-All tests can be found in _tests_; they use [`mocha`](http://visionmedia.github.com/mocha/) to run. Just call `mocha filelist` or `mocha search`.
+All tests can be found in _tests_; they use [`mocha`](http://visionmedia.github.com/mocha/) to run. To run them:
+
+```
+npm install mocha -g
+cd tests
+mocha run_tests
+```
 
 # Builds
 
