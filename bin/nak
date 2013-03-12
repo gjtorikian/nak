@@ -40,7 +40,7 @@ if (query) {
 
   walkdir(fpath, options, function(file, lines, _matches) {  
     if (!options.color) {
-      console.log(file + ":");
+      console.log(file);
       console.log(lines);
     }
     else {
@@ -52,11 +52,12 @@ if (query) {
     matches += _matches;
     filecount++;
   }, function() {
-    console.log("Found " + matches + (matches == 1 ? " match" : " matches")  + " in " + filecount + (filecount == 1 ? " file " : " files ")); 
+    if (!options.ackmate)
+      console.log("Found " + matches + (matches == 1 ? " match" : " matches")  + " in " + filecount + (filecount == 1 ? " file " : " files ")); 
   });
 }
 // if we're listing, callback at the very end
-else {
+else if (options.list) {
   walkdir(fpath, options, function(lines) {
     console.log(lines);
   });
@@ -64,11 +65,14 @@ else {
 
 function setExclusions(fpath) {
   var exclusions = dirExclusions = [];
-  if (options.pathToNakignore) {
-    exclusions = fs.readFileSync(options.pathToNakignore, "utf-8");
-  }
 
-  // if there's no .nakignore in the current search path, don't worry about it.
+  // if these ignore files don't exist, don't worry about them
+  try {
+    if (options.pathToNakignore) {
+      exclusions = fs.readFileSync(options.pathToNakignore, "utf-8");
+    }
+  catch (e) { };
+
   try {
     dirExclusions = fs.readFileSync(fpath + path.sep + ".nakignore", "utf8");
   } catch (e) { };
