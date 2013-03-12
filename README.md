@@ -15,7 +15,15 @@ As long as it's faster than `ack`, I'm pleased.
 
 # Behavior
 
-A lot of the functionality is modeled around `ag`. In fact, you can provide an _.nakignore_ file to define patterns to ignore. _.nakignore_ files in the directory you're searching under are automatically included as ignore rules, but you can choose to specify an additional file with `-a`.
+A lot of the functionality is modeled around `ag`. In fact, you can provide a _.nakignore_ file to define patterns to ignore. _.nakignore_ files in the directory you're searching under are automatically included as ignore rules, but you can choose to specify any additional file (with _.gitignore_-style rules) with `-a`.
+
+Some missing options include specifying a maxdepth, or following symlinks.
+
+# Usages
+
+`nak -G '*.js' 'function' .`
+
+Find all files ending in `js`, in the current directory,  with the word `function`.
 
 # Why?
 
