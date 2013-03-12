@@ -7,99 +7,75 @@ var options = require("../lib/options").parseArgs(),
     ignorer = require('../lib/ignorer');
 
 
-// we're piping data in; that means
-// a query with a possible replace
-// (probably a nicer way to do this, without an explicit argument)
-if (options.piped) {
-  process.stdin.resume();
-  process.stdin.setEncoding('utf8');
 
-  if (options.args.length > 1)
-    makeQuery(options.args.shift(), options.args.shift());
-  else
-    makeQuery(options.args.shift());
+// arguments
+var fpath = path.resolve(options.args.pop()),
+    replacement = null,
+    query = null,
+    fileColor = "", textColor = "", matchColor = "";
 
-  process.stdin.on('data', function(data) {
-    options.piped = true;
-    walkdir(data,options,function(file, lines){  
-      if (!options.color) {
-        console.log(file);
-        console.log(lines);
-      }
-      else {
-        console.log(fileColor, file);
-        lines = lines.replace(query, textColor);
-        console.log(matchColor, lines);
-      }
-    });
+if (options.args.length == 1)
+  query = options.args.pop();
+else if (options.args.length == 2) {
+  replacement = options.args.pop();
+  query = options.args.pop();
+}
+
+if (options.color) {
+  fileColor = '\n\033[36m%s\033[0m';
+  textColor = '\033[37;43m\1\033[0;90m';
+  matchColor = '\033[90m%s';
+}
+
+options.filesInclude = options.fileSearch ? ignorer.makeWildcardRegExp(options.fileSearch, true) : { test: function(){ return true }};
+
+setExclusions(fpath);
+
+// set the query up, and present a final summary; also, pump out results as they come.
+// "streaming" output like this is slower (because console.log blocks)
+// but serves a purpose when finding text
+if (query) {
+  makeQuery(query, replacement);
+  var matches = 0, filecount = 0;
+
+  walkdir(fpath, options, function(file, lines, _matches) {  
+    if (!options.color) {
+      console.log(file);
+      console.log(lines);
+    }
+    else {
+      console.log(fileColor, file + ":");
+      lines = lines.replace(options.query, textColor);
+      console.log(matchColor, lines);
+    }
+
+    matches += _matches;
+    filecount++;
+  }, function() {
+    if (!options.ackmate)
+      console.log("Found " + matches + (matches == 1 ? " match" : " matches")  + " in " + filecount + (filecount == 1 ? " file " : " files ")); 
   });
 }
-else {
-  // arguments
-  var fpath = path.resolve(options.args.pop()),
-      replacement = null,
-      query = null,
-      fileColor = "", textColor = "", matchColor = "";
-
-  if (options.args.length == 1)
-    query = options.args.pop();
-  else if (options.args.length == 2) {
-    replacement = options.args.pop();
-    query = options.args.pop();
-  }
-
-  if (options.color) {
-    fileColor = '\n\033[36m%s\033[0m';
-    textColor = '\033[37;43m\1\033[0;90m';
-    matchColor = '\033[90m%s';
-  }
-
-  options.filesInclude = options.fileSearch ? ignorer.makeWildcardRegExp(options.fileSearch, true) : { test: function(){ return true }};
-
-  setExclusions(fpath);
-
-  // set the query up, and present a final summary; also, pump out results as they come.
-  // "streaming" output like this is slower (because console.log blocks)
-  // but serves a purpose when finding text
-  if (query) {
-    makeQuery(query, replacement);
-    var matches = 0, filecount = 0;
-
-    walkdir(fpath, options, function(file, lines, _matches) {  
-      if (!options.color) {
-        console.log(file + ":");
-        console.log(lines);
-      }
-      else {
-        console.log(fileColor, file + ":");
-        lines = lines.replace(options.query, textColor);
-        console.log(matchColor, lines);
-      }
-
-      matches += _matches;
-      filecount++;
-    }, function() {
-      if (!options.json)
-        console.log("Found " + matches + (matches == 1 ? " match" : " matches")  + " in " + filecount + (filecount == 1 ? " file " : " files ")); 
-    });
-  }
-  // if we're listing, callback at the very end
-  else if (options.list) {
-    walkdir(fpath, options, function(lines) {
-      console.log(lines);
-    });
-  }
+// if we're listing, callback at the very end
+else if (options.list) {
+  walkdir(fpath, options, function(lines) {
+    console.log(lines);
+  });
 }
 
 function setExclusions(fpath) {
   var exclusions = dirExclusions = [];
-  if (options.pathToNakignore) {
-    exclusions = fs.readFileSync(options.pathToNakignore, "utf-8");
-  }
 
-  // if there's no .nakignore in the current search path, don't worry about it.
+  // if these ignore files don't exist, don't worry about them
   try {
-    dirExclusions = fs.readFileSync(fpath + "/.nakignore", "utf-8");
+    if (options.pathToNakignore) {
+      exclusions = fs.readFileSync(options.pathToNakignore, "utf-8");
+    }
+  }
+  catch (e) { };
+
+  try {
+    dirExclusions = fs.readFileSync(fpath + path.sep + ".nakignore", "utf8");
   } catch (e) { };
 
   var combinedExclusions = exclusions + "\n" + dirExclusions + "\n" + (options.ignore !== undefined ? options.ignore : "");
@@ -124,5 +100,9 @@ function makeQuery(query, replacement) {
 
   if (replacement) {
     options.replacement = replacement;
+  }
+
+  if (options.ackmate) {
+    options.cleanQuery = new RegExp(query, flags.substr(1));
   }
 }
