@@ -71,6 +71,7 @@ function setExclusions(fpath) {
     if (options.pathToNakignore) {
       exclusions = fs.readFileSync(options.pathToNakignore, "utf-8");
     }
+  }
   catch (e) { };
 
   try {
@@ -99,5 +100,9 @@ function makeQuery(query, replacement) {
 
   if (replacement) {
     options.replacement = replacement;
+  }
+
+  if (options.ackmate) {
+    options.cleanQuery = new RegExp(query, flags.substr(1));
   }
 }
