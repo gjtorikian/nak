@@ -37,7 +37,7 @@ I benchmarked and rewrote and learned a lot. While `nak` does not support _every
 
 You like numbers? Me too. They're fun.
 
-Here's the average time for grabbing the filelist in cloud9infra five times (about 33,761 files). The commands do the exact same thing by just listing all the available files in the directory structure, _and_ exclude the usual nonsense directories ( _.git_, _.c9revisions_, `sm` backups, _e.t.c._). :
+Here's the average time for grabbing information from a directory with 13,300 files five times. The commands do the exact same thing by just listing all the available files in the directory structure, _and_ try to exclude the same files/directories.
 
 `ag`     | `nak`    | `ack`    | `find`
 ---------|----------|----------|---------
@@ -49,7 +49,7 @@ Here are benchmarks for finding the phrase "va" in cloud9infra, as a whole-word 
 ---------|----------|-----------|---------
 34.609s  | 29.327s  | 88.883s   | 256.14s
 
-Obviously, part of the speed impediment to `ack` or `grep` is the lack of a _simple_ way to provide ignore rules. In addition, `ag` isn't really meant for a `find` replacement, which could explain the first table's results.
+Obviously, part of the speed impediment to `ack` or `grep` is the lack of a _simple_ way to provide ignore rules.
 
 # Testing
 
