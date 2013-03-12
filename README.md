@@ -15,7 +15,15 @@ As long as it's faster than `ack`, I'm pleased.
 
 # Behavior
 
-A lot of the functionality is modeled around `ag`. In fact, you can provide an _.nakignore_ file to define patterns to ignore. _.nakignore_ files in the directory you're searching under are automatically included as ignore rules, but you can choose to specify an additional file with `-a`.
+A lot of the functionality is modeled around `ag`. In fact, you can provide a _.nakignore_ file to define patterns to ignore. _.nakignore_ files in the directory you're searching under are automatically included as ignore rules, but you can choose to specify any additional file (with _.gitignore_-style rules) with `-a`.
+
+Some missing options include specifying a maxdepth, or following symlinks.
+
+# Usages
+
+`nak -G '*.js' 'function' .`
+
+Find all files ending in `js`, in the current directory,  with the word `function`.
 
 # Why?
 
@@ -50,31 +58,31 @@ All tests can be found in _tests_; they use [`mocha`](http://visionmedia.github.
 ```
 npm install mocha -g
 cd tests
-mocha run_tests
+mocha test_runner
 ```
 
 # Builds
 
+Building is necessary only if you want a minified version of nak, or, a version that works with [VFS-Local](https://github.com/c9/vfs-local).
+
 Just call `node compile.js` from the root directory to generate a build. You'll need to `npm install uglify-js` first. 
 
-You'll get several files: one is nak minifed, and the other is a minifed version of nak that is suitable for use with [VFS-Local](https://github.com/c9/vfs-local). The API and argument consumption for VFS local is the exact same; just make sure you call `api.execute` within the callback for `vfs.extend`.
+You'll get several files: one is nak minifed, and the other is a minifed version of nak that is suitable for use with VFS. The API and argument consumption for VFS local is the exact same; just make sure you call `api.execute` within the callback for `vfs.extend`.
 
-#Options
+# Options
 
 ```
 Options:
-      -l|--list             list files encountered
-      -H|--hidden           search hidden files and directories (default off)
-      -c|--color            adds color to results  (default off)
-      -a|--pathToNakignore «value»  path to an additional nakignore file
-      -m|--maxdepth «value» the maximum depth of the search
-      -q|--literal          do not parse PATTERN as a regular expression; match it literally
-      -w|--wordRegexp       only match whole words
-      -i|--ignoreCase       match case insensitively
-      -G|--fileSearch «value»   comma-separated list of wildcard files to only search on
-      -d|--ignore «value»   comma-separated list of wildcard files to additionally ignore
-      -p|--piped            indicates filenames are being piped in (like, from ag or find)
-      -j|--json             returns results as JSON; these are NOT sorted. it's also a little slower.
+        -l|--list                       list files encountered
+        -H|--hidden                     search hidden files and directories (default off)
+        -c|--color                      adds color to results  (default off)
+        -a|--pathToNakignore «value»        path to an additional nakignore file
+        -q|--literal                    do not parse PATTERN as a regular expression; match it literally
+        -w|--wordRegexp                 only match whole words
+        -i|--ignoreCase                 match case insensitively
+        -G|--fileSearch «value»       comma-separated list of wildcard files to only search on
+        -d|--ignore «value»             comma-separated list of wildcard files to additionally ignore
+           --ackmate                    output results in a format parseable by AckMate
 ```
 
 # History
