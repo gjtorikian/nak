@@ -84,6 +84,15 @@ Options:
            --ackmate                    output results in a format parseable by AckMate
 ```
 
+# Hotspots
+
+Right now there are two areas of the code that take the longest amount of time:
+
+* determining whether a file is binary or not (calls to `isBinaryFile` in _walkdir.js_)
+* assembling the final output in _finalizer_
+
+Everything else--from ignore rule creation to option parsing--takes an insignificant amount of time to process.
+
 # History
 
 For a deeper discussion on this tool versus `ag`, `find`, and `grep`, see [this discussion](https://github.com/ajaxorg/cloud9/pull/2369) into Cloud9.
