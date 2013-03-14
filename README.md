@@ -25,15 +25,21 @@ Some missing options include specifying a maxdepth, or following symlinks.
 
 `nak -G '*.js' 'function' .`
 
-Find all files ending in `js`, in the current directory,  with the word `function`.
+Find all files ending in `js`, in the current directory, with the phrase `function`.
+
+`nak -a ../.gitignore -i 'def' .`
+
+Find all files in the current directory, with the phrase in `def` (case-insensitive), in the current directory; also, use the _.gitignore_ rules from the folder above
+
+`nak -d '*.less' -w 'mixin' .`
+
+Find all files in the current directory that are not `.less`, with the phrase `mixin` (whole word), in the current directory
 
 # Why?
 
 After reading Felix's [Faster than C](https://github.com/felixge/faster-than-c) notes, I became inspired to just write a **fast** `ack` clone, in Node.js.
 
-Previously, TJ had [written an `ack` clone in Node](https://github.com/visionmedia/search), but his code was not very performant. At least, it was slower than `ack`.
-
-I benchmarked and rewrote and learned a lot. While `nak` does not support _everything_ `ack` does, it does nearly everything `ag` does, and, at least, 100% supports everything needed for Cloud9.
+I benchmarked and rewrote and learned a lot. While `nak` does not support _everything_ `ack` does, it does nearly everything `ag` does.
 
 # Benchmarks
 
@@ -77,11 +83,11 @@ Options:
         -l|--list                       list files encountered
         -H|--hidden                     search hidden files and directories (default off)
         -c|--color                      adds color to results  (default off)
-        -a|--pathToNakignore «value»        path to an additional nakignore file
+        -a|--pathToNakignore «value»    path to an additional nakignore file
         -q|--literal                    do not parse PATTERN as a regular expression; match it literally
         -w|--wordRegexp                 only match whole words
         -i|--ignoreCase                 match case insensitively
-        -G|--fileSearch «value»       comma-separated list of wildcard files to only search on
+        -G|--fileSearch «value»         comma-separated list of wildcard files to only search on
         -d|--ignore «value»             comma-separated list of wildcard files to additionally ignore
            --ackmate                    output results in a format parseable by AckMate
 ```
@@ -98,3 +104,9 @@ Everything else--from ignore rule creation to option parsing--takes an insignifi
 # History
 
 For a deeper discussion on this tool versus `ag`, `find`, and `grep`, see [this discussion](https://github.com/ajaxorg/cloud9/pull/2369) into Cloud9.
+
+# License
+
+Copyright (c) 2013 Garen Torikian
+
+MIT License
