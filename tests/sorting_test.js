@@ -5,8 +5,8 @@ var Exec = require("child_process").exec;
 
 var basePath = __dirname + "/sorting_fixtures";
 
-var nakPath = "node ../bin/nak";
-//var nakPath = "node ../build/nak.min";
+var nakPath = "node bin/nak";
+//var nakPath = "node build/nak.min";
 
 var options = [
         "-a ../.nakignore",

@@ -5,50 +5,50 @@ var Exec = require("child_process").exec;
 
 var basePath = __dirname + "/search_fixtures";
 
-var nakPath = "node ../bin/nak";
-//var nakPath = "node ../build/nak.min";
+var nakPath = "node bin/nak";
+//var nakPath = "node build/nak.min";
 
 var options1 = [
-        "-a ../.nakignore",
+        "-a .nakignore",
         "-i",
         "-q",
         "'sriracha'", 
         basePath
     ],
     options2 = [
-        "-a ../.nakignore",
+        "-a .nakignore",
         "-q",
         "'Messenger'",
         basePath
     ],
     options3 = [
-        "-a ../.nakignore",
+        "-a .nakignore",
         "-q",
         "-w",
         "'gastro'",
         basePath
     ],
     options4 = [
-        "-a ../.nakignore",
+        "-a .nakignore",
         "-i",
         "'pb.'",
         basePath
     ],
     options5 = [
-        "-a ../.nakignore",
+        "-a .nakignore",
         "-H",
         "'.+wave'",
         basePath
     ],
     options6 = [
-        "-a ../.nakignore",
+        "-a .nakignore",
         "-G '*.txt, file*.gif'",
         "-i",
         "'shorts'",
         basePath
     ],
     options7 = [
-        "-a ../.nakignore",
+        "-a .nakignore",
         "--ignore 'file*.txt'",
         "'williamsburg'",
         "-H",
