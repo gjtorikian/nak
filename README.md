@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/gjtorikian/nak.png)](https://travis-ci.org/gjtorikian/nak)
+
 An `ack`/`ag` clone written in Node.js. The focus here is on speed and performance, 
 rather than trying to 100% mimic all the functionality of `ack`.
 
@@ -57,8 +59,7 @@ All tests can be found in _tests_; they use [`mocha`](http://visionmedia.github.
 
 ```
 npm install mocha -g
-cd tests
-mocha test_runner
+npm test
 ```
 
 # Builds
@@ -84,6 +85,15 @@ Options:
         -d|--ignore «value»             comma-separated list of wildcard files to additionally ignore
            --ackmate                    output results in a format parseable by AckMate
 ```
+
+# Hotspots
+
+Right now there are two areas of the code that take the longest amount of time:
+
+* determining whether a file is binary or not (calls to `isBinaryFile` in _walkdir.js_)
+* assembling the final output in _finalizer_
+
+Everything else--from ignore rule creation to option parsing--takes an insignificant amount of time to process.
 
 # History
 
