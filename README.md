@@ -57,8 +57,7 @@ All tests can be found in _tests_; they use [`mocha`](http://visionmedia.github.
 
 ```
 npm install mocha -g
-cd tests
-mocha test_runner
+npm test
 ```
 
 # Builds
