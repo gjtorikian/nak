@@ -64,7 +64,9 @@ else if (options.list) {
 }
 
 function setExclusions(fpath) {
-  var referencedExclusions = nakExclusions = gitExclusions = hgExclusions = svnExclusions = "";
+  var referencedExclusions = "",
+      nakExclusions = "",
+      gitExclusions = "";
 
   // if these ignore files don't exist, don't worry about them
   if (options.pathToNakignore) {
