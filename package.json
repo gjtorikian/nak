@@ -5,7 +5,9 @@
     "keywords": ["ag", "ack", "grep", "search"],
     "author": "Garen J. Torikian <gjtorikian@gmail.com>",
     "dependencies": { 
-        "isbinaryfile": ""
+        "isbinaryfile": "",
+        "sigmund": "1.0.0",
+        "lru-cache": "2.2.2"
     },
     "devDependencies": {
         "uglify-js": "",
