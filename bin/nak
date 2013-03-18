@@ -89,8 +89,7 @@ function setExclusions(fpath) {
                            (options.ignore || "");
 
   if (combinedExclusions.length) {
-    options.exclusions = combinedExclusions.split(/\r?\n/).filter(function (e) { return !!e && /^[^#]/.test(e)});
-    options.exclusionsLength = options.exclusions.length;
+    options.exclusions = combinedExclusions.split(/\r?\n/);
   }
 };
 

@@ -1,0 +1,133 @@
+Statistical profiling result from v8.log, (752 ticks, 606 unaccounted, 0 excluded).
+
+ [Unknown]:
+   ticks  total  nonlib   name
+    606   80.6%
+
+ [Shared libraries]:
+   ticks  total  nonlib   name
+
+ [JavaScript]:
+   ticks  total  nonlib   name
+    252   33.5%   33.5%  LazyCompile: *fs.lstatSync fs.js:519
+    150   19.9%   19.9%  LazyCompile: *split native string.js:554
+     87   11.6%   11.6%  LazyCompile: ~<anonymous> /Users/garentorikian/Development/nak/lib/relpathspec.js:50
+     41    5.5%    5.5%  LazyCompile: *RelPathSpec.matches /Users/garentorikian/Development/nak/lib/relpathspec.js:154
+     38    5.1%    5.1%  LazyCompile: *Subpath.matchesAt /Users/garentorikian/Development/nak/lib/relpathspec.js:72
+     37    4.9%    4.9%  LazyCompile: *PathComponents.parse /Users/garentorikian/Development/nak/lib/relpathspec.js:42
+     20    2.7%    2.7%  LazyCompile: *FSTrivialMask.matches /Users/garentorikian/Development/nak/lib/mask.js:25
+     19    2.5%    2.5%  LazyCompile: *fs.readdir fs.js:495
+     13    1.7%    1.7%  LazyCompile: <anonymous> native date.js:145
+     11    1.5%    1.5%  LazyCompile: ~walker.walkdir.readdirAction /Users/garentorikian/Development/nak/lib/walkdir.js:79
+      7    0.9%    0.9%  LazyCompile: ~fn /Users/garentorikian/Development/nak/lib/walkdir.js:46
+      7    0.9%    0.9%  LazyCompile: *RelPathList.matches /Users/garentorikian/Development/nak/lib/relpathlist.js:45
+      5    0.7%    0.7%  LazyCompile: *setTime native date.js:506
+      4    0.5%    0.5%  LazyCompile: *walker.walkdir.statter /Users/garentorikian/Development/nak/lib/walkdir.js:44
+      3    0.4%    0.4%  LazyCompile: ~fs.lstatSync fs.js:519
+      3    0.4%    0.4%  LazyCompile: ~<anonymous> fs.js:296
+      3    0.4%    0.4%  LazyCompile: *walker.walkdir.readdir /Users/garentorikian/Development/nak/lib/walkdir.js:77
+      2    0.3%    0.3%  RegExp: ^\\.\\w
+      2    0.3%    0.3%  LazyCompile: *test native regexp.js:220
+      2    0.3%    0.3%  LazyCompile: *Ignorer.isFileIgnored /Users/garentorikian/Development/nak/lib/ignorer.js:31
+      1    0.1%    0.1%  LazyCompile: ~fs.Stats.isFile fs.js:65
+      1    0.1%    0.1%  LazyCompile: ~RelPathList.membership /Users/garentorikian/Development/nak/lib/relpathlist.js:31
+      1    0.1%    0.1%  LazyCompile: ~RelPathList.matches /Users/garentorikian/Development/nak/lib/relpathlist.js:45
+      1    0.1%    0.1%  LazyCompile: ~DoConstructRegExp native regexp.js:35
+      1    0.1%    0.1%  LazyCompile: ToNumber native runtime.js:527
+      1    0.1%    0.1%  LazyCompile: APPLY_PREPARE native runtime.js:438
+      1    0.1%    0.1%  LazyCompile: *fs.Stats.isFile fs.js:65
+      1    0.1%    0.1%  LazyCompile: *RelPathList.membership /Users/garentorikian/Development/nak/lib/relpathlist.js:31
+      1    0.1%    0.1%  LazyCompile: *CreateDate native apinatives.js:33
+
+ [C++]:
+   ticks  total  nonlib   name
+
+ [GC]:
+   ticks  total  nonlib   name
+     19    2.5%
+
+ [Bottom up (heavy) profile]:
+  Note: percentage shows a share of a particular caller in the total
+  amount of its parent calls.
+  Callers occupying less than 2.0% are not shown.
+
+   ticks parent  name
+    252   33.5%  LazyCompile: *fs.lstatSync fs.js:519
+    250   99.2%    LazyCompile: *walker.walkdir.statter /Users/garentorikian/Development/nak/lib/walkdir.js:44
+    250  100.0%      LazyCompile: ~walker.walkdir.readdirAction /Users/garentorikian/Development/nak/lib/walkdir.js:79
+    250  100.0%        LazyCompile: ~walker.walkdir.readdir /Users/garentorikian/Development/nak/lib/walkdir.js:97
+    250  100.0%          LazyCompile: ~<anonymous> fs.js:296
+
+    150   19.9%  LazyCompile: *split native string.js:554
+    150  100.0%    LazyCompile: *PathComponents.parse /Users/garentorikian/Development/nak/lib/relpathspec.js:42
+    150  100.0%      LazyCompile: *RelPathSpec.matches /Users/garentorikian/Development/nak/lib/relpathspec.js:154
+    150  100.0%        LazyCompile: *RelPathList.matches /Users/garentorikian/Development/nak/lib/relpathlist.js:45
+    150  100.0%          LazyCompile: *Ignorer.isFileIgnored /Users/garentorikian/Development/nak/lib/ignorer.js:31
+    150  100.0%            LazyCompile: ~walker.walkdir.readdirAction /Users/garentorikian/Development/nak/lib/walkdir.js:79
+
+     87   11.6%  LazyCompile: ~<anonymous> /Users/garentorikian/Development/nak/lib/relpathspec.js:50
+     87  100.0%    LazyCompile: *PathComponents.parse /Users/garentorikian/Development/nak/lib/relpathspec.js:42
+     87  100.0%      LazyCompile: *RelPathSpec.matches /Users/garentorikian/Development/nak/lib/relpathspec.js:154
+     87  100.0%        LazyCompile: *RelPathList.matches /Users/garentorikian/Development/nak/lib/relpathlist.js:45
+     87  100.0%          LazyCompile: *Ignorer.isFileIgnored /Users/garentorikian/Development/nak/lib/ignorer.js:31
+     87  100.0%            LazyCompile: ~walker.walkdir.readdirAction /Users/garentorikian/Development/nak/lib/walkdir.js:79
+
+     41    5.5%  LazyCompile: *RelPathSpec.matches /Users/garentorikian/Development/nak/lib/relpathspec.js:154
+     40   97.6%    LazyCompile: *RelPathList.matches /Users/garentorikian/Development/nak/lib/relpathlist.js:45
+     35   87.5%      LazyCompile: *Ignorer.isFileIgnored /Users/garentorikian/Development/nak/lib/ignorer.js:31
+     35  100.0%        LazyCompile: ~walker.walkdir.readdirAction /Users/garentorikian/Development/nak/lib/walkdir.js:79
+     35  100.0%          LazyCompile: ~walker.walkdir.readdir /Users/garentorikian/Development/nak/lib/walkdir.js:97
+     35  100.0%            LazyCompile: ~<anonymous> fs.js:296
+      5   12.5%      LazyCompile: *Ignorer.isDirIgnored /Users/garentorikian/Development/nak/lib/ignorer.js:40
+      5  100.0%        LazyCompile: *walker.walkdir.readdir /Users/garentorikian/Development/nak/lib/walkdir.js:77
+      5  100.0%          LazyCompile: ~fn /Users/garentorikian/Development/nak/lib/walkdir.js:46
+      5  100.0%            LazyCompile: *walker.walkdir.statter /Users/garentorikian/Development/nak/lib/walkdir.js:44
+      1    2.4%    LazyCompile: ~RelPathList.membership /Users/garentorikian/Development/nak/lib/relpathlist.js:31
+      1  100.0%      LazyCompile: ~RelPathList.matches /Users/garentorikian/Development/nak/lib/relpathlist.js:45
+      1  100.0%        LazyCompile: ~Ignorer.isDirIgnored /Users/garentorikian/Development/nak/lib/ignorer.js:40
+      1  100.0%          LazyCompile: ~walker.walkdir.readdir /Users/garentorikian/Development/nak/lib/walkdir.js:77
+      1  100.0%            LazyCompile: ~fn /Users/garentorikian/Development/nak/lib/walkdir.js:46
+
+     38    5.1%  LazyCompile: *Subpath.matchesAt /Users/garentorikian/Development/nak/lib/relpathspec.js:72
+     36   94.7%    LazyCompile: *RelPathSpec.matches /Users/garentorikian/Development/nak/lib/relpathspec.js:154
+     36  100.0%      LazyCompile: *RelPathList.matches /Users/garentorikian/Development/nak/lib/relpathlist.js:45
+     34   94.4%        LazyCompile: *Ignorer.isFileIgnored /Users/garentorikian/Development/nak/lib/ignorer.js:31
+     34  100.0%          LazyCompile: ~walker.walkdir.readdirAction /Users/garentorikian/Development/nak/lib/walkdir.js:79
+     34  100.0%            LazyCompile: ~walker.walkdir.readdir /Users/garentorikian/Development/nak/lib/walkdir.js:97
+      2    5.6%        LazyCompile: *Ignorer.isDirIgnored /Users/garentorikian/Development/nak/lib/ignorer.js:40
+      2  100.0%          LazyCompile: *walker.walkdir.readdir /Users/garentorikian/Development/nak/lib/walkdir.js:77
+      2  100.0%            LazyCompile: ~fn /Users/garentorikian/Development/nak/lib/walkdir.js:46
+      2    5.3%    LazyCompile: *PathComponents.parse /Users/garentorikian/Development/nak/lib/relpathspec.js:42
+      2  100.0%      LazyCompile: *RelPathSpec.matches /Users/garentorikian/Development/nak/lib/relpathspec.js:154
+      2  100.0%        LazyCompile: *RelPathList.matches /Users/garentorikian/Development/nak/lib/relpathlist.js:45
+      1   50.0%          LazyCompile: *Ignorer.isFileIgnored /Users/garentorikian/Development/nak/lib/ignorer.js:31
+      1  100.0%            LazyCompile: ~walker.walkdir.readdirAction /Users/garentorikian/Development/nak/lib/walkdir.js:79
+      1   50.0%          LazyCompile: *Ignorer.isDirIgnored /Users/garentorikian/Development/nak/lib/ignorer.js:40
+      1  100.0%            LazyCompile: *walker.walkdir.readdir /Users/garentorikian/Development/nak/lib/walkdir.js:77
+
+     37    4.9%  LazyCompile: *PathComponents.parse /Users/garentorikian/Development/nak/lib/relpathspec.js:42
+     37  100.0%    LazyCompile: *RelPathSpec.matches /Users/garentorikian/Development/nak/lib/relpathspec.js:154
+     37  100.0%      LazyCompile: *RelPathList.matches /Users/garentorikian/Development/nak/lib/relpathlist.js:45
+     37  100.0%        LazyCompile: *Ignorer.isFileIgnored /Users/garentorikian/Development/nak/lib/ignorer.js:31
+     37  100.0%          LazyCompile: ~walker.walkdir.readdirAction /Users/garentorikian/Development/nak/lib/walkdir.js:79
+     37  100.0%            LazyCompile: ~walker.walkdir.readdir /Users/garentorikian/Development/nak/lib/walkdir.js:97
+
+     20    2.7%  LazyCompile: *FSTrivialMask.matches /Users/garentorikian/Development/nak/lib/mask.js:25
+     19   95.0%    LazyCompile: *Subpath.matchesAt /Users/garentorikian/Development/nak/lib/relpathspec.js:72
+     19  100.0%      LazyCompile: *RelPathSpec.matches /Users/garentorikian/Development/nak/lib/relpathspec.js:154
+     19  100.0%        LazyCompile: *RelPathList.matches /Users/garentorikian/Development/nak/lib/relpathlist.js:45
+     19  100.0%          LazyCompile: *Ignorer.isFileIgnored /Users/garentorikian/Development/nak/lib/ignorer.js:31
+     19  100.0%            LazyCompile: ~walker.walkdir.readdirAction /Users/garentorikian/Development/nak/lib/walkdir.js:79
+      1    5.0%    LazyCompile: *RelPathSpec.matches /Users/garentorikian/Development/nak/lib/relpathspec.js:154
+      1  100.0%      LazyCompile: *RelPathList.matches /Users/garentorikian/Development/nak/lib/relpathlist.js:45
+      1  100.0%        LazyCompile: *Ignorer.isFileIgnored /Users/garentorikian/Development/nak/lib/ignorer.js:31
+      1  100.0%          LazyCompile: ~walker.walkdir.readdirAction /Users/garentorikian/Development/nak/lib/walkdir.js:79
+      1  100.0%            LazyCompile: ~walker.walkdir.readdir /Users/garentorikian/Development/nak/lib/walkdir.js:97
+
+     19    2.5%  LazyCompile: *fs.readdir fs.js:495
+     19  100.0%    LazyCompile: *walker.walkdir.readdir /Users/garentorikian/Development/nak/lib/walkdir.js:77
+     19  100.0%      LazyCompile: ~fn /Users/garentorikian/Development/nak/lib/walkdir.js:46
+     19  100.0%        LazyCompile: *walker.walkdir.statter /Users/garentorikian/Development/nak/lib/walkdir.js:44
+     19  100.0%          LazyCompile: ~walker.walkdir.readdirAction /Users/garentorikian/Development/nak/lib/walkdir.js:79
+     19  100.0%            LazyCompile: ~walker.walkdir.readdir /Users/garentorikian/Development/nak/lib/walkdir.js:97
+
