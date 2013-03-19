@@ -79,7 +79,7 @@ function setExclusions(fpath) {
     nakExclusions = fs.readFileSync(fpath + path.sep + ".nakignore", "utf8");
   } catch (e) { };
 
-  if (!options.skipVCSIgnores) {
+  if (options.addVCSIgnores) {
     try {
       gitExclusions = fs.readFileSync(fpath + path.sep + ".gitignore", "utf8");
     } catch (e) { };
