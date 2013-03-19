@@ -64,25 +64,34 @@ else if (options.list) {
 }
 
 function setExclusions(fpath) {
-  var exclusions = dirExclusions = [];
+  var referencedExclusions = "",
+      nakExclusions = "",
+      gitExclusions = "";
 
   // if these ignore files don't exist, don't worry about them
+  if (options.pathToNakignore) {
   try {
-    if (options.pathToNakignore) {
-      exclusions = fs.readFileSync(options.pathToNakignore, "utf-8");
-    }
+      referencedExclusions = fs.readFileSync(options.pathToNakignore, "utf-8");
+    } catch (e) { };
   }
-  catch (e) { };
 
   try {
-    dirExclusions = fs.readFileSync(fpath + path.sep + ".nakignore", "utf8");
+    nakExclusions = fs.readFileSync(fpath + path.sep + ".nakignore", "utf8");
   } catch (e) { };
 
-  var combinedExclusions = exclusions + "\n" + dirExclusions + "\n" + (options.ignore !== undefined ? options.ignore : "");
+  if (options.addVCSIgnores) {
+    try {
+      gitExclusions = fs.readFileSync(fpath + path.sep + ".gitignore", "utf8");
+    } catch (e) { };
+  }
+  
+  var combinedExclusions = referencedExclusions + "\n" + 
+                           nakExclusions + "\n" + 
+                           gitExclusions + "\n" + 
+                           (options.ignore || "");
 
   if (combinedExclusions.length) {
-    options.exclusions = combinedExclusions.split(/\r?\n/).filter(function (e) { return !!e && /^[^#]/.test(e)});
-    options.exclusionsLength = options.exclusions.length;
+    options.exclusions = combinedExclusions.split(/\r?\n/);
   }
 };
 
