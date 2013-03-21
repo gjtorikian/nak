@@ -14,4 +14,4 @@ command.txt
 cloud9infra/
 benchmark/ack
 benchmark/ag
-build/*.concat.js
+build/
