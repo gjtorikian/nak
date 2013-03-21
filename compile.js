@@ -51,7 +51,10 @@ function uglify(src, destPath) {
 }
 
 
-fs.mkdirSync("build");
+try {
+	fs.mkdirSync("build");
+}
+catch (e) { }
 
 var concatedFiles = concat({
 	src : ["node_modules/isbinaryfile/index.js", 
