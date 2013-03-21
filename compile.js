@@ -15,10 +15,12 @@ function concat(opts) {
 	src = src.replace(/require\(.+\/?isbinaryfile[\"\']\)/, "isbinaryfile")
 			 .replace("module.exports = function(bytes, size) {", "isbinaryfile = function(bytes, size) {")
 			 
+			 .replace(/require\(.+\/?minimatch_two[\"\']\)/g, "minimatch_two")
 			 .replace(/require\(.+\/?ignorer[\"\']\)/g, "ignorer")
 			 .replace(/require\(.+\/?mergesort[\"\']\)/g, "mergesort")
 			 .replace(/require\(.+\/?options[\"\']\)/g, "parser")
 			 .replace(/require\(.+\/?walkdir[\"\']\)/g, "walker")
+             .replace(/require\(.+\/?finalizer[\"\']\)/g, "Finalizer")
 			 
 			 .replace("#!/usr/bin/env node", "");
 
@@ -49,7 +51,7 @@ function uglify(src, destPath) {
 }
 
 var concatedFiles = concat({
-	src : ["node_modules/isbinaryfile/index.js", 
+	src : ["node_modules/isbinaryfile/index.js", "lib/minimatch_two.js", 
 		   "lib/mergesort.js", "lib/ignorer.js", "lib/options.js", "lib/walkdir.js", 
 		   "bin/nak"],
 	dest : 'build/nak.concat.js',
