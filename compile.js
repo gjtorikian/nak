@@ -14,7 +14,10 @@ function concat(opts) {
 	// resolve requires inline
 	src = src.replace(/require\(.+\/?isbinaryfile[\"\']\)/, "isbinaryfile")
 			 .replace("module.exports = function(bytes, size) {", "isbinaryfile = function(bytes, size) {")
+			 .replace("module.exports = LRUCache", "lrucache = LRUCache")
 			 
+			 .replace(/require\(.+\/?sigmund[\"\']\)/g, "sigmund")
+			 .replace(/require\(.+\/?lru-cache[\"\']\)/g, "lrucache")
 			 .replace(/require\(.+\/?minimatch_two[\"\']\)/g, "minimatch")
 			 .replace(/require\(.+\/?ignorer[\"\']\)/g, "Ignorer")
 			 .replace(/require\(.+\/?mergesort[\"\']\)/g, "mergesort")
@@ -58,6 +61,8 @@ catch (e) { }
 
 var concatedFiles = concat({
 	src : ["node_modules/isbinaryfile/index.js", 
+           "node_modules/sigmund/sigmund.js", 
+           "node_modules/lru-cache/lib/lru-cache.js", 
 		   "lib/minimatch_two.js", 
 		   "lib/mergesort.js", 
 		   "lib/ignorer.js", 
