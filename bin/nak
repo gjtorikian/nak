@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var options = require("../lib/options").parseArgs(),
     fs = require('fs'),
     path = require('path'),
