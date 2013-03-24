@@ -34,7 +34,35 @@ setExclusions(fpath);
 // set the query up, and present a final summary; also, pump out results as they come.
 // "streaming" output like this is slower (because console.log blocks)
 // but serves a purpose when finding text
-if (query) {
+if (typeof callback != "undefined") {
+  if (query) {
+    makeQuery(query, replacement);
+    var matches = 0, filecount = 0;
+    var output = "";
+  
+    walkdir(fpath, options, function(file, lines, _matches) {  
+      output += file + "\n" + lines;
+      matches += _matches;
+      filecount++;
+    }, function() {
+      if (!options.ackmate)
+        output += "Found " + matches + (matches == 1 ? " match" : " matches")  
+          + " in " + filecount + (filecount == 1 ? " file " : " files "); 
+      callback(null, {
+        data      : output, 
+        count     : matches, 
+        filecount : filecount
+      });
+    });
+  }
+  // if we're listing, callback at the very end
+  else if (options.list) {
+    walkdir(fpath, options, function(lines) {
+      callback(null, lines);
+    });
+  }
+}
+else if (query) {
   makeQuery(query, replacement);
   var matches = 0, filecount = 0;
 
@@ -53,7 +81,8 @@ if (query) {
     filecount++;
   }, function() {
     if (!options.ackmate)
-      console.log("Found " + matches + (matches == 1 ? " match" : " matches")  + " in " + filecount + (filecount == 1 ? " file " : " files ")); 
+      console.log("Found " + matches + (matches == 1 ? " match" : " matches")  
+        + " in " + filecount + (filecount == 1 ? " file " : " files ")); 
   });
 }
 // if we're listing, callback at the very end
