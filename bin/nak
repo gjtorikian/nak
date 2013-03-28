@@ -117,7 +117,7 @@ function setExclusions(fpath) {
   var combinedExclusions = referencedExclusions + "\n" + 
                            nakExclusions + "\n" + 
                            gitExclusions + "\n" + 
-                           (options.ignore || "");
+                           (options.ignore || "").replace(/,/g, "\n");
 
   if (combinedExclusions.length) {
     options.exclusions = combinedExclusions.split(/\r?\n/);
