@@ -6,8 +6,6 @@ var options = require("../lib/options").parseArgs(),
     walkdir = require('../lib/walkdir').walkdir,
     ignorer = require('../lib/ignorer');
 
-
-
 // arguments
 var fpath = path.resolve(options.args.pop()),
     replacement = null,
@@ -35,30 +33,34 @@ setExclusions(fpath);
 // "streaming" output like this is slower (because console.log blocks)
 // but serves a purpose when finding text
 if (typeof callback != "undefined") {
+  var Stream = require('stream').Stream;
+  var stream = new Stream();
+  stream.readable = true;
+    
+  callback(null, {stream: stream});
+    
   if (query) {
     makeQuery(query, replacement);
     var matches = 0, filecount = 0;
     var output = "";
   
     walkdir(fpath, options, function(file, lines, _matches) {  
-      output += file + "\n" + lines;
+      stream.emit("data", file + "\n" + lines);
       matches += _matches;
       filecount++;
     }, function() {
       if (!options.ackmate)
-        output += "Found " + matches + (matches == 1 ? " match" : " matches")  
-          + " in " + filecount + (filecount == 1 ? " file " : " files "); 
-      callback(null, {
-        data      : output, 
-        count     : matches, 
-        filecount : filecount
-      });
+        stream.emit("data", "Found " + matches + (matches == 1 ? " match" : " matches")  
+          + " in " + filecount + (filecount == 1 ? " file " : " files ")); 
+      
+      stream.emit("end", {count : matches, filecount: filecount});
     });
   }
   // if we're listing, callback at the very end
   else if (options.list) {
     walkdir(fpath, options, function(lines) {
-      callback(null, lines);
+        stream.emit("data", lines);
+        stream.emit("end");
     });
   }
 }
