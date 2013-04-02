@@ -1,7 +1,7 @@
 var execSync = require('exec-sync');
 var path = require("path");
 
-var dir = "~/github/atom";
+var dir = "../"; // my development directory, ~133,523 files
 
 var ag = function(filelist) {
     try {
