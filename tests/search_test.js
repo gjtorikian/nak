@@ -17,13 +17,33 @@ describe("search", function() {
         }
 
         var lines = stdout.split("\n");
-        var msgLine = lines[lines.length - 2].split(" "); 
+        var msgLine = lines[lines.length - 2].split(" ");
         var count = msgLine[1];
         var filecount = msgLine[4];
-        
+
         Assert.equal(count, 8);
         Assert.equal(filecount, 4);
         Assert.equal(lines.length, 16);
+
+        next();
+       });
+    });
+
+    it("should find matches without regexp, follow ON, case-sensitive OFF and word boundaries OFF",  function(next) {
+       Exec(nakPath + " " + "-f -a .nakignore -i -q 'sriracha' " + basePath, function(err, stdout, stderr) {
+        if (err || stderr) {
+            console.error(err);
+            console.error(stderr);
+        }
+
+        var lines = stdout.split("\n");
+        var msgLine = lines[lines.length - 2].split(" ");
+        var count = msgLine[1];
+        var filecount = msgLine[4];
+
+        Assert.equal(count, 9);
+        Assert.equal(filecount, 5);
+        Assert.equal(lines.length, 19);
 
         next();
        });
@@ -35,9 +55,9 @@ describe("search", function() {
             console.error(err);
             console.error(stderr);
         }
-        
+
         var lines = stdout.split("\n");
-        var msgLine = lines[lines.length - 2].split(" "); 
+        var msgLine = lines[lines.length - 2].split(" ");
         var count = msgLine[1];
         var filecount = msgLine[4];
 
@@ -55,9 +75,9 @@ describe("search", function() {
             console.error(err);
             console.error(stderr);
         }
-       
+
         var lines = stdout.split("\n");
-        var msgLine = lines[lines.length - 2].split(" "); 
+        var msgLine = lines[lines.length - 2].split(" ");
         var count = msgLine[1];
         var filecount = msgLine[4];
 
@@ -75,9 +95,9 @@ describe("search", function() {
             console.error(err);
             console.error(stderr);
         }
-        
+
         var lines = stdout.split("\n");
-        var msgLine = lines[lines.length - 2].split(" "); 
+        var msgLine = lines[lines.length - 2].split(" ");
         var count = msgLine[1];
         var filecount = msgLine[4];
 
@@ -97,7 +117,7 @@ describe("search", function() {
         }
 
         var lines = stdout.split("\n");
-        var msgLine = lines[lines.length - 2].split(" "); 
+        var msgLine = lines[lines.length - 2].split(" ");
         var count = msgLine[1];
         var filecount = msgLine[4];
 
@@ -108,7 +128,7 @@ describe("search", function() {
         next();
        });
     });
-   
+
     it("should find matches without case-sensitive regexp, only two file types, and no hidden files (even if they contain the string)",  function(next) {
        Exec(nakPath + " " + "-a .nakignore -G '*.txt, file*.gif' -i 'shorts' " + basePath, function(err, stdout, stderr) {
         if (err || stderr) {
@@ -117,7 +137,7 @@ describe("search", function() {
         }
 
         var lines = stdout.split("\n");
-        var msgLine = lines[lines.length - 2].split(" "); 
+        var msgLine = lines[lines.length - 2].split(" ");
         var count = msgLine[1];
         var filecount = msgLine[4];
 
@@ -137,7 +157,7 @@ describe("search", function() {
         }
 
         var lines = stdout.split("\n");
-        var msgLine = lines[lines.length - 2].split(" "); 
+        var msgLine = lines[lines.length - 2].split(" ");
         var count = msgLine[1];
         var filecount = msgLine[4];
 
