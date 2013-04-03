@@ -16,7 +16,7 @@ var options = [
     
 describe("search", function() {
     it("should return directory results properly",  function(next) {
-       Exec(nakPath + " " + options.join(" "), function(err, stdout, stderr) {
+       Exec(nakPath + " -a ../.nakignore -l " + basePath, function(err, stdout, stderr) {
         if (err || stderr) {
             console.error(err);
             console.error(stderr);

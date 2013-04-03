@@ -8,12 +8,6 @@ var basePath = __dirname + "/filelist_fixtures";
 var nakPath = "node bin/nak";
 //var nakPath = "node build/nak.min";
 
-var options1 = [
-        "-l",
-        "-H",
-        "-a ../.nakignore",
-        basePath
-    ],
     options2 = [
         "-l",
         "-a ../.nakignore",
@@ -29,7 +23,7 @@ var options1 = [
 
 describe("filelist", function() {
     it("should get filelist, including hidden files and binaries",  function(next) {
-       Exec(nakPath + " " + options1.join(" "), function(err, stdout, stderr) {
+       Exec(nakPath + " -l -H -a ../.nakignore " + basePath, function(err, stdout, stderr) {
         if (err || stderr) {
             console.error(err);
             console.error(stderr);
@@ -46,7 +40,7 @@ describe("filelist", function() {
     });
 
     it("should get filelist, including symlinks, hidden files, and binaries",  function(next) {
-       Exec(nakPath + " " + options3.join(" "), function(err, stdout, stderr) {
+       Exec(nakPath + " -l -H -a ../.nakignore -f " + basePath, function(err, stdout, stderr) {
         if (err || stderr) {
             console.error(err);
             console.error(stderr);
@@ -61,7 +55,7 @@ describe("filelist", function() {
     });
 
     it("should get filelist, without hidden files",  function(next) {
-       Exec(nakPath + " " + options2.join(" "), function(err, stdout, stderr) {
+       Exec(nakPath + " -l -a ../.nakignore " + basePath, function(err, stdout, stderr) {
         if (err || stderr) {
             console.error(err);
             console.error(stderr);
