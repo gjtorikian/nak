@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/gjtorikian/nak.png)](https://travis-ci.org/gjtorikian/nak)
 
-An `ack`/`ag` clone written in Node.js. The focus here is on speed and performance, 
+An `ack`/`ag` clone written in Node.js. The focus here is on speed and performance,
 rather than trying to 100% mimic all the functionality of `ack`.
 
 There were two goals set out:
@@ -72,9 +72,9 @@ npm test
 
 Building is necessary only if you want a minified version of nak, or, a version that works with [VFS-Local](https://github.com/c9/vfs-local).
 
-Just call `node compile.js` from the root directory to generate a build. You'll need to `npm install uglify-js` first. 
+Just call `node compile.js` from the root directory to generate a build. You'll need to `npm install uglify-js` first.
 
-You'll get several files: one is nak minifed, and the other is a minifed version of nak that is suitable for use with VFS. The API and argument consumption for VFS local is the exact same; just make sure you call `api.execute` within the callback for `vfs.extend`.
+You'll get several files: one is nak minifed, and the other is a minified version of nak that is suitable for use with VFS. The API and argument consumption for VFS local is the exact same; just make sure you call `api.execute` within the callback for `vfs.extend`.
 
 # Options
 
