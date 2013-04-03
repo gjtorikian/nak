@@ -80,18 +80,18 @@ You'll get several files: one is nak minifed, and the other is a minified versio
 
 ```
 Options:
-      -l|--list                         list files encountered
-      -H|--hidden                       search hidden files and directories (default off)
-      -c|--color                        adds color to results  (default off)
-      -a|--pathToNakignore «value»      path to an additional nakignore file
-      -q|--literal                      do not parse PATTERN as a regular expression; match it literally
-      -w|--wordRegexp                   only match whole words
-      -i|--ignoreCase                   match case insensitively
-      -G|--fileSearch «value»           comma-separated list of wildcard files to only search on
-      -d|--ignore «value»               comma-separated list of wildcard files to additionally ignore
-      -U|--addVCSIgnores                include VCS ignore files (.gitignore); still uses .nakignore
-         --ackmate                      output results in a format parseable by AckMate
-      -f|--follow                       follow symlinks (default off)
+        -l|--list                         list files encountered
+        -H|--hidden                       search hidden files and directories (default off)
+        -c|--color                        adds color to results  (default off)
+        -a|--pathToNakignore «value»      path to an additional nakignore file
+        -q|--literal                      do not parse PATTERN as a regular expression; match it literally
+        -w|--wordRegexp                   only match whole words
+        -i|--ignoreCase                   match case insensitively
+        -G|--fileSearch «value»           comma-separated list of wildcard files to only search on
+        -d|--ignore «value»               comma-separated list of wildcard files to additionally ignore
+        -f|--follow                       follow symlinks (default off)
+        -U|--addVCSIgnores                include VCS ignore files (.gitignore); still uses .nakignore
+           --ackmate                      output results in a format parseable by AckMate
 ```
 
 # Hotspots
