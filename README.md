@@ -89,8 +89,9 @@ Options:
       -i|--ignoreCase                   match case insensitively
       -G|--fileSearch «value»           comma-separated list of wildcard files to only search on
       -d|--ignore «value»               comma-separated list of wildcard files to additionally ignore
-      -U|--addVCSIgnores               include VCS ignore files (.gitignore); still uses .nakignore
+      -U|--addVCSIgnores                include VCS ignore files (.gitignore); still uses .nakignore
          --ackmate                      output results in a format parseable by AckMate
+      -f|--follow                       follow symlinks (default off)
 ```
 
 # Hotspots
