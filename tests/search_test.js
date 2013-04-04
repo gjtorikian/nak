@@ -182,4 +182,25 @@ describe("search", function() {
         next();
        });
     });
+
+    // see: http://me.dt.in.th/page/StringDecoder
+    it("should find incomplete thai characters",  function(next) {
+       Exec(nakPath + " " + "-a .nakignore 'ร' " + basePath, function(err, stdout, stderr) {
+        if (err || stderr) {
+            console.error(err);
+            console.error(stderr);
+        }
+        var lines = stdout.split("\n");
+
+        var msgLine = lines[lines.length - 2].split(" ");
+        var count = msgLine[1];
+        var filecount = msgLine[4];
+
+        Assert.equal(count, 1);
+        Assert.equal(filecount, 1);
+        Assert.equal(lines.length, 5);
+
+        next();
+       });
+    });
 });
