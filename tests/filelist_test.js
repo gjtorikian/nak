@@ -68,4 +68,17 @@ describe("filelist", function() {
         next();
        });
     });
+
+    it("ignores symlinks to files/folders that don't exist", function(next) {
+      Exec(nakPath + " -f -l -a ../.nakignore -G symlink-to-nowhere.txt " + basePath, function(err, stdout, stderr) {
+       if (err || stderr) {
+           console.error(err);
+           console.error(stderr);
+       }
+       var files = stdout.split("\n").filter(function(file) { return !!file; }).sort();
+       Assert.equal(files.length, 0);
+
+       next();
+      });
+    });
 });
