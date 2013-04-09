@@ -2,6 +2,7 @@
 
 var Assert = require("assert");
 var Exec = require("child_process").exec;
+var Fs = require('fs');
 
 var basePath = __dirname + "/search_fixtures";
 
@@ -200,6 +201,29 @@ describe("search", function() {
         Assert.equal(filecount, 1);
         Assert.equal(lines.length, 5);
 
+        next();
+       });
+    });
+
+    it("should understand what to do with onFilepathSearchFn",  function(next) {
+       var M = require('mstring')
+       var fn = 'if (/file1\.txt/.test(filepath)) return "photo";\nreturn null;'
+
+       Exec(nakPath + " " + "-a .nakignore 'photo' --onFilepathSearchFn '" + fn + "' " + basePath, function(err, stdout, stderr) {
+        if (err || stderr) {
+            console.error(err);
+            console.error(stderr);
+        }
+
+        var lines = stdout.split("\n");
+
+        var msgLine = lines[lines.length - 2].split(" ");
+        var count = msgLine[1];
+        var filecount = msgLine[4];
+
+        Assert.equal(count, 5);
+        Assert.equal(filecount, 3);
+        
         next();
        });
     });

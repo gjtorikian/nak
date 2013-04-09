@@ -29,6 +29,10 @@ options.filesInclude = options.fileSearch ? ignorer.makeWildcardRegExp(options.f
 
 setExclusions(fpath);
 
+if (options.onFilepathSearchFn) {
+  options.onFilepathSearchFn = new Function("filepath", options.onFilepathSearchFn);
+}
+
 // set the query up, and present a final summary; also, pump out results as they come.
 // "streaming" output like this is slower (because console.log blocks)
 // but serves a purpose when finding text
