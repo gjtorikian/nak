@@ -23,6 +23,8 @@ Some missing options include specifying a maxdepth, or following symlinks.
 
 # Usages
 
+## As an executable
+
 `nak -G '*.js' 'function' .`
 
 Find all files ending in `js`, in the current directory, with the phrase `function`.
@@ -34,6 +36,18 @@ Find all files in the current directory, with the phrase in `def` (case-insensit
 `nak -d '*.less' -w 'mixin' .`
 
 Find all files in the current directory that are not `.less`, with the phrase `mixin` (whole word), in the current directory
+
+## Within a script
+
+```javascript
+var nak = require("./lib/nak");
+
+options = {};
+options.list = true;
+options.path = ".";
+
+nak.run(options);
+```
 
 # Why?
 
@@ -103,12 +117,30 @@ Right now there are two areas of the code that take the longest amount of time:
 
 Everything else--from ignore rule creation to option parsing--takes an insignificant amount of time to process.
 
-# History
-
-For a deeper discussion on this tool versus `ag`, `find`, and `grep`, see [this discussion](https://github.com/ajaxorg/cloud9/pull/2369) into Cloud9.
-
 # License
 
-Copyright (c) 2013 Garen Torikian
+# MIT License
 
-MIT License
+Copyright (c) 2013 Garen J. Torikian 
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+

@@ -19,7 +19,7 @@
         "mocha": ""
     },
     "bin": { "nak": "./bin/nak" }, 
-    "main": "./bin/nak" , 
+    "main": "./lib/nak", 
     "engines": { "node": ">= 0.8.x" },
     "repository" :
     { "type" : "git",
