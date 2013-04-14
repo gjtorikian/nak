@@ -233,7 +233,7 @@ describe("search", function() {
         if (/file1\.txt/.test(filepath)) return "photo";
         return null;
        }
-       process.env.onFilepathSearchFn = simplefunc.toJson(fn);
+       process.env.nak_onFilepathSearchFn = simplefunc.toJson(fn);
 
        Exec(nakPath + " " + "-a .nakignore 'photo' " + basePath, function(err, stdout, stderr) {
         if (err || stderr) {
