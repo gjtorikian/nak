@@ -15,3 +15,4 @@ cloud9infra/
 benchmark/ack
 benchmark/ag
 build/
+test_script.js
