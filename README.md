@@ -46,7 +46,48 @@ options = {};
 options.list = true;
 options.path = ".";
 
+// capture stdout to do something with it
 nak.run(options);
+```
+
+## Your own function event handlers - BETA
+
+If you want, you can define some of your own function handling for certain events, and pass them to `nak`.
+All functions should return `null` upon failing.
+
+Currently available functions are:
+
+* onFilepathSearchFn(filepath) - Given a `filepath`, this returns a String representing the contents of that file
+
+If you're using `nak` as part of a Node.js script using `child_process.exec` or `child_process.spawn` you **MUST** serialize your function as JSON; `nak` will deserialize it for you. You must also store the function as `process.env.nak_<function_name>`. This is because `process.env` is automatically passed to the `exec` or `spawn` function. Modifying `process.env` like this only affects the running script, not your machine.
+
+**I've only tested serialization with the [simplefunc](https://github.com/ajlopez/SimpleFunc) module.**
+
+In the following examples, when `nak` encounters a filepath called `file1.txt`, it''ll return "photo" as the file's contents. Otherwise, it returns `null`, and normal `nak` behavior is performed--in this case, a disk read of the file.
+
+### Event functions in a script
+
+```javascript
+var simplefunc = require('simplefunc');
+
+var fn = function(filepath) {
+    if (/file1\.txt/.test(filepath)) return "photo";
+    return null;
+}
+
+process.env.nak_onFilepathSearchFn = simplefunc.toJson(fn);
+
+Exec(nakPath + " " + "-a .nakignore 'photo' " + process.cwd(), function(err, stdout, stderr) {
+ // ...
+}
+```
+
+### Event function from the command line
+
+This is ugly, but it works the same as above:
+
+```bash
+nak -a .nakignore 'photo' --onFilepathSearchFn 'if (/file1\.txt/.test(filepath)) return "photo";\nreturn null;' .
 ```
 
 # Why?
@@ -94,18 +135,19 @@ You'll get several files: one is nak minifed, and the other is a minified versio
 
 ```
 Options:
-        -l|--list                         list files encountered
-        -H|--hidden                       search hidden files and directories (default off)
-        -c|--color                        adds color to results  (default off)
-        -a|--pathToNakignore «value»      path to an additional nakignore file
-        -q|--literal                      do not parse PATTERN as a regular expression; match it literally
-        -w|--wordRegexp                   only match whole words
-        -i|--ignoreCase                   match case insensitively
-        -G|--fileSearch «value»           comma-separated list of wildcard files to only search on
-        -d|--ignore «value»               comma-separated list of wildcard files to additionally ignore
-        -f|--follow                       follow symlinks (default off)
-        -U|--addVCSIgnores                include VCS ignore files (.gitignore); still uses .nakignore
-           --ackmate                      output results in a format parseable by AckMate
+      -l|--list                             list files encountered
+      -H|--hidden                           search hidden files and directories (default off)
+      -c|--color                            adds color to results  (default off)
+      -a|--pathToNakignore «value»          path to an additional nakignore file
+      -q|--literal                          do not parse PATTERN as a regular expression; match it literally
+      -w|--wordRegexp                       only match whole words
+      -i|--ignoreCase                       match case insensitively
+      -G|--fileSearch «value»               comma-separated list of wildcard files to only search on
+      -d|--ignore «value»                   comma-separated list of wildcard files to additionally ignore
+      -f|--follow                           follow symlinks (default off)
+      -U|--addVCSIgnores                    include VCS ignore files (.gitignore); still uses .nakignore
+         --ackmate                          output results in a format parseable by AckMate
+         --onFilepathSearchFn «value»       while searching, executes this function on a matching filepath
 ```
 
 # Hotspots
