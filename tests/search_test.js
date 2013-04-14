@@ -5,7 +5,7 @@ var Exec = require("child_process").exec;
 var Fs = require('fs');
 
 var basePath = __dirname + "/search_fixtures";
-var simplefunc = require('simplefunc');
+var nak = require('../lib/nak');
 
 var nakPath = "node bin/nak";
 //var nakPath = "node build/nak.min";
@@ -233,7 +233,7 @@ describe("search", function() {
         if (/file1\.txt/.test(filepath)) return "photo";
         return null;
        }
-       process.env.nak_onFilepathSearchFn = simplefunc.toJson(fn);
+       process.env.nak_onFilepathSearchFn = nak.serialize(fn);
 
        Exec(nakPath + " " + "-a .nakignore 'photo' " + basePath, function(err, stdout, stderr) {
         if (err || stderr) {
