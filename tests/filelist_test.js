@@ -8,19 +8,6 @@ var basePath = __dirname + "/filelist_fixtures";
 var nakPath = "node bin/nak";
 //var nakPath = "node build/nak.min";
 
-    options2 = [
-        "-l",
-        "-a ../.nakignore",
-        basePath
-    ],
-    options3 = [
-      "-l",
-      "-H",
-      "-a ../.nakignore",
-      "-f",
-      basePath
-    ];
-
 describe("filelist", function() {
     it("should get filelist, including hidden files and binaries",  function(next) {
        Exec(nakPath + " -l -H -a ../.nakignore " + basePath, function(err, stdout, stderr) {

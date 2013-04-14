@@ -5,6 +5,7 @@ var Exec = require("child_process").exec;
 var Fs = require('fs');
 
 var basePath = __dirname + "/search_fixtures";
+var simplefunc = require('simplefunc');
 
 var nakPath = "node bin/nak";
 //var nakPath = "node build/nak.min";
@@ -205,11 +206,36 @@ describe("search", function() {
        });
     });
 
-    it("should understand what to do with onFilepathSearchFn",  function(next) {
-       var M = require('mstring')
+    it("should understand what to do with onFilepathSearchFn (as a string)", function(next) {
        var fn = 'if (/file1\.txt/.test(filepath)) return "photo";\nreturn null;'
 
        Exec(nakPath + " " + "-a .nakignore 'photo' --onFilepathSearchFn '" + fn + "' " + basePath, function(err, stdout, stderr) {
+        if (err || stderr) {
+            console.error(err);
+            console.error(stderr);
+        }
+
+        var lines = stdout.split("\n");
+
+        var msgLine = lines[lines.length - 2].split(" ");
+        var count = msgLine[1];
+        var filecount = msgLine[4];
+
+        Assert.equal(count, 5);
+        Assert.equal(filecount, 3);
+        
+        next();
+       });
+    });
+
+    it("should understand what to do with onFilepathSearchFn (as a process.env var)", function(next) {
+       var fn = function(filepath) {
+        if (/file1\.txt/.test(filepath)) return "photo";
+        return null;
+       }
+       process.env.onFilepathSearchFn = simplefunc.toJson(fn);
+
+       Exec(nakPath + " " + "-a .nakignore 'photo' " + basePath, function(err, stdout, stderr) {
         if (err || stderr) {
             console.error(err);
             console.error(stderr);
