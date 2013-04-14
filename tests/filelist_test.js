@@ -17,10 +17,10 @@ describe("filelist", function() {
         }
         var files = stdout.split("\n").filter(function(file) { return !!file; }).sort();
 
-        Assert.equal(files.length, 8);
-        Assert.equal(files[2], basePath + "/level1/Toasty.gif");
-        Assert.equal(files[3], basePath + "/level1/level2/.hidden");
-        Assert.equal(files[4], basePath + "/level1/level2/.level3a/.hidden");
+        Assert.equal(files.length, 14);
+        Assert.equal(files[8], basePath + "/level1/Toasty.gif");
+        Assert.equal(files[9], basePath + "/level1/level2/.hidden");
+        Assert.equal(files[10], basePath + "/level1/level2/.level3a/.hidden");
 
         next();
        });
@@ -34,8 +34,8 @@ describe("filelist", function() {
         }
         var files = stdout.split("\n").filter(function(file) { return !!file; }).sort();
 
-        Assert.equal(files.length, 9);
-        Assert.equal(files[8], basePath + "/symlink-to-1.txt");
+        Assert.equal(files.length, 15);
+        Assert.equal(files[14], basePath + "/symlink-to-1.txt");
 
         next();
        });
@@ -67,5 +67,37 @@ describe("filelist", function() {
 
        next();
       });
+    });
+
+    it("should get filelist, even for a starting hidden dir",  function(next) {
+       Exec(nakPath + " -l -a ../.nakignore " + basePath + "/.root", function(err, stdout, stderr) {
+        if (err || stderr) {
+            console.error(err);
+            console.error(stderr);
+        }
+        var files = stdout.split("\n").filter(function(file) { return !!file; }).sort();
+
+        Assert.equal(files.length, 5);
+        Assert.equal(files[2], basePath + "/.root/p.txt");
+        Assert.equal(files[4], basePath + "/.root/subdir/foo.js");
+
+        next();
+       });
+    });
+
+    it("should get filelist, and hidden files, even for a starting hidden dir",  function(next) {
+       Exec(nakPath + " -l -a ../.nakignore --hidden " + basePath + "/.root", function(err, stdout, stderr) {
+        if (err || stderr) {
+            console.error(err);
+            console.error(stderr);
+        }
+        var files = stdout.split("\n").filter(function(file) { return !!file; }).sort();
+
+        Assert.equal(files.length, 6);
+        Assert.equal(files[2], basePath + "/.root/p.txt");
+        Assert.equal(files[5], basePath + "/.root/subdir/foo.js");
+
+        next();
+       });
     });
 });

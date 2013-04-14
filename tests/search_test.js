@@ -123,9 +123,9 @@ describe("search", function() {
         var count = msgLine[1];
         var filecount = msgLine[4];
 
-        Assert.equal(count, 14);
-        Assert.equal(filecount, 7);
-        Assert.equal(lines.length, 30);
+        Assert.equal(count, 17);
+        Assert.equal(filecount, 10);
+        Assert.equal(lines.length, 39);
 
         next();
        });
@@ -163,9 +163,9 @@ describe("search", function() {
         var count = msgLine[1];
         var filecount = msgLine[4];
 
-        Assert.equal(count, 14);
-        Assert.equal(filecount, 4);
-        Assert.equal(lines.length, 20);
+        Assert.equal(count, 15);
+        Assert.equal(filecount, 5);
+        Assert.equal(lines.length, 23);
 
         next();
        });
@@ -207,7 +207,7 @@ describe("search", function() {
     });
 
     it("should understand what to do with onFilepathSearchFn (as a string)", function(next) {
-       var fn = 'if (/file1\.txt/.test(filepath)) return "photo";\nreturn null;'
+       var fn = 'if (/file1\.txt/.test(filepath)) return "photo";\nreturn null;';
 
        Exec(nakPath + " " + "-a .nakignore 'photo' --onFilepathSearchFn '" + fn + "' " + basePath, function(err, stdout, stderr) {
         if (err || stderr) {
@@ -223,7 +223,7 @@ describe("search", function() {
 
         Assert.equal(count, 5);
         Assert.equal(filecount, 3);
-        
+
         next();
        });
     });
@@ -232,7 +232,8 @@ describe("search", function() {
        var fn = function(filepath) {
         if (/file1\.txt/.test(filepath)) return "photo";
         return null;
-       }
+       };
+
        process.env.nak_onFilepathSearchFn = nak.serialize(fn);
 
        Exec(nakPath + " " + "-a .nakignore 'photo' " + basePath, function(err, stdout, stderr) {
@@ -249,7 +250,26 @@ describe("search", function() {
 
         Assert.equal(count, 5);
         Assert.equal(filecount, 3);
-        
+        next();
+       });
+    });
+
+    it("should find matches without regexp, in a starting hidden dir",  function(next) {
+       Exec(nakPath + " " + "-f -a .nakignore -i -q 'sriracha' " + basePath + "/.root", function(err, stdout, stderr) {
+        if (err || stderr) {
+            console.error(err);
+            console.error(stderr);
+        }
+
+        var lines = stdout.split("\n");
+        var msgLine = lines[lines.length - 2].split(" ");
+        var count = msgLine[1];
+        var filecount = msgLine[4];
+
+        Assert.equal(count, 3);
+        Assert.equal(filecount, 1);
+        Assert.equal(lines.length, 5);
+
         next();
        });
     });
