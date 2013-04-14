@@ -81,14 +81,15 @@ normal `nak` behavior is performed--in this case, a disk read of the file.
 ### Event functions in a script
 
 ```javascript
-var simplefunc = require('simplefunc');
+var nak = require('nak'),
+    Exec = require('child_process').exec;
 
 var fn = function(filepath) {
     if (/file1\.txt/.test(filepath)) return "photo";
     return null;
 }
 
-process.env.nak_onFilepathSearchFn = simplefunc.toJson(fn);
+process.env.nak_onFilepathSearchFn = nak.serialize(fn);
 
 Exec(nakPath + " " + "-a .nakignore 'photo' " + process.cwd(), function(err, stdout, stderr) {
  // ...
