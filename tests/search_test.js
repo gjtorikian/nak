@@ -274,7 +274,6 @@ describe("search", function() {
        });
     });
 
-
     it("should not find matches in secondary directories, while ignoring VCS",  function(next) {
        Exec(nakPath + " " + "-f -a .nakignore --addVCSIgnores -i -q 'farn' " + basePath, function(err, stdout, stderr) {
         if (err || stderr) {
