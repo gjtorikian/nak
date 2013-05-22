@@ -5,9 +5,8 @@ function sanitize(code){
              .replace("module.exports = function(bytes, size) {", "isbinaryfile = function(bytes, size) {")
              .replace("module.exports = LRUCache", "lrucache = LRUCache")
              
-             .replace(/require\(.+\/?sigmund[\"\']\)/g, "sigmund")
              .replace(/require\(.+\/?lru-cache[\"\']\)/g, "lrucache")
-             .replace(/require\(.+\/?minimatch_two[\"\']\)/g, "minimatch")
+             .replace(/require\(.+\/?minimatch[\"\']\)/g, "minimatch")
              .replace(/require\(.+\/?ignorer[\"\']\)/g, "Ignorer")
              .replace(/require\(.+\/?mergesort[\"\']\)/g, "mergesort")
              .replace(/require\(.+\/?options[\"\']\)/g, "parser")
@@ -67,8 +66,8 @@ catch (e) { }
 var concatedFiles = concat({
     src : ["node_modules/isbinaryfile/index.js", 
            "node_modules/sigmund/sigmund.js", 
+           "node_modules/minimatch/minimatch.js",
            "node_modules/lru-cache/lib/lru-cache.js", 
-           "lib/minimatch_two.js", 
            "lib/mergesort.js", 
            "lib/ignorer.js", 
            "lib/options.js", 

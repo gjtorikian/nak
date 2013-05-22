@@ -1,6 +1,6 @@
 {
     "name": "nak",
-    "version": "0.2.13",
+    "version": "0.2.14",
     "description": "ack and ag inspired tool written in Node. Designed to be fast.",
     "keywords": ["ag", "ack", "grep", "search"],
     "author": "Garen J. Torikian <gjtorikian@gmail.com>",
@@ -10,8 +10,7 @@
     }],
     "dependencies": { 
         "isbinaryfile": "",
-        "sigmund": "1.0.0",
-        "lru-cache": "2.2.2",
+        "minimatch": "0.2.11",
         "simplefunc": "0.0.2"
     },
     "devDependencies": {

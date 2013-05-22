@@ -273,4 +273,24 @@ describe("search", function() {
         next();
        });
     });
+
+
+    it("should not find matches in secondary directories, while ignoring VCS",  function(next) {
+       Exec(nakPath + " " + "-f -a .nakignore --addVCSIgnores -i -q 'farn' " + basePath, function(err, stdout, stderr) {
+        if (err || stderr) {
+            console.error(err);
+            console.error(stderr);
+        }
+
+        var lines = stdout.split("\n");
+        var msgLine = lines[lines.length - 2].split(" ");
+        var count = msgLine[1];
+        var filecount = msgLine[4];
+        
+        Assert.equal(count, 0);
+        Assert.equal(filecount, 0);
+
+        next();
+       });
+    });
 });
