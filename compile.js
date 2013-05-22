@@ -3,9 +3,7 @@ var fs = require('fs');
 function sanitize(code){
   return code.replace(/require\(.+\/?isbinaryfile[\"\']\)/g, "isbinaryfile")
              .replace("module.exports = function(bytes, size) {", "isbinaryfile = function(bytes, size) {")
-             .replace("module.exports = LRUCache", "lrucache = LRUCache")
              
-             .replace(/require\(.+\/?lru-cache[\"\']\)/g, "lrucache")
              .replace(/require\(.+\/?minimatch[\"\']\)/g, "minimatch")
              .replace(/require\(.+\/?ignorer[\"\']\)/g, "Ignorer")
              .replace(/require\(.+\/?mergesort[\"\']\)/g, "mergesort")
