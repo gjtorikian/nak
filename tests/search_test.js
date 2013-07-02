@@ -177,6 +177,7 @@ describe("search", function() {
             console.error(err);
             console.error(stderr);
         }
+        
         var lines = stdout.split("\n");
 
         Assert.equal("8;26 4,42 4", lines[4].split(":")[0]);
@@ -206,6 +207,46 @@ describe("search", function() {
        });
     });
 
+    it("should find matches without regexp, in a starting hidden dir",  function(next) {
+       Exec(nakPath + " " + "-f -a .nakignore -i -q 'sriracha' " + basePath + "/.root", function(err, stdout, stderr) {
+        if (err || stderr) {
+            console.error(err);
+            console.error(stderr);
+        }
+
+        var lines = stdout.split("\n");
+        var msgLine = lines[lines.length - 2].split(" ");
+        var count = msgLine[1];
+        var filecount = msgLine[4];
+
+        Assert.equal(count, 4);
+        Assert.equal(filecount, 2);
+        Assert.equal(lines.length, 8);
+
+        next();
+       });
+    });
+
+    it("should not find matches in secondary directories, while ignoring VCS",  function(next) {
+       Exec(nakPath + " " + "-f -a .nakignore --addVCSIgnores -i -q 'farn' " + basePath, function(err, stdout, stderr) {
+        if (err || stderr) {
+            console.error(err);
+            console.error(stderr);
+        }
+
+        var lines = stdout.split("\n");
+        var msgLine = lines[lines.length - 2].split(" ");
+        var count = msgLine[1];
+        var filecount = msgLine[4];
+        
+        Assert.equal(count, 0);
+        Assert.equal(filecount, 0);
+
+        next();
+       });
+    });
+
+    // KEEP THESE AT THE END; THE CHANGE ENV VARS FOR THE RUNNER
     it("should understand what to do with onFilepathSearchFn (as a string)", function(next) {
        var fn = 'if (/file1\.txt/.test(filepath)) return "photo";\nreturn null;';
 
@@ -250,45 +291,6 @@ describe("search", function() {
 
         Assert.equal(count, 5);
         Assert.equal(filecount, 3);
-        next();
-       });
-    });
-
-    it("should find matches without regexp, in a starting hidden dir",  function(next) {
-       Exec(nakPath + " " + "-f -a .nakignore -i -q 'sriracha' " + basePath + "/.root", function(err, stdout, stderr) {
-        if (err || stderr) {
-            console.error(err);
-            console.error(stderr);
-        }
-
-        var lines = stdout.split("\n");
-        var msgLine = lines[lines.length - 2].split(" ");
-        var count = msgLine[1];
-        var filecount = msgLine[4];
-
-        Assert.equal(count, 3);
-        Assert.equal(filecount, 1);
-        Assert.equal(lines.length, 5);
-
-        next();
-       });
-    });
-
-    it("should not find matches in secondary directories, while ignoring VCS",  function(next) {
-       Exec(nakPath + " " + "-f -a .nakignore --addVCSIgnores -i -q 'farn' " + basePath, function(err, stdout, stderr) {
-        if (err || stderr) {
-            console.error(err);
-            console.error(stderr);
-        }
-
-        var lines = stdout.split("\n");
-        var msgLine = lines[lines.length - 2].split(" ");
-        var count = msgLine[1];
-        var filecount = msgLine[4];
-        
-        Assert.equal(count, 0);
-        Assert.equal(filecount, 0);
-
         next();
        });
     });
