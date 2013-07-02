@@ -8,7 +8,7 @@
       "name": "Kevin Sawicki",
       "email": "kevin@github.com"
     }],
-    "dependencies": { 
+    "dependencies": {
         "isbinaryfile": "",
         "minimatch": "0.2.11",
         "simplefunc": "0.0.2"
@@ -16,10 +16,11 @@
     "devDependencies": {
         "uglify-js": "2.3.5",
         "execSync": "0.0.4",
-        "mocha": "1.10.0"
+        "mocha": "1.10.0",
+        "wrench": "1.5.1"
     },
-    "bin": { "nak": "./bin/nak" }, 
-    "main": "./lib/nak", 
+    "bin": { "nak": "./bin/nak" },
+    "main": "./lib/nak",
     "engines": { "node": ">= 0.8.x" },
     "repository" :
     { "type" : "git",
