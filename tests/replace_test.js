@@ -65,7 +65,7 @@ describe("replace", function() {
     });
 
     it("should report (and replace) multiple matches in same line using ackmate",  function(next) {
-       Exec(nakPath + " " + "-a .nakignore --ackmate 'w(olf)' 'al$1'" + basePath, function(err, stdout, stderr) {
+       Exec(nakPath + " " + "-a .nakignore --ackmate 'w(o..)' 'al$1us' " + basePath, function(err, stdout, stderr) {
         if (err || stderr) {
             console.error(err);
             console.error(stderr);
@@ -73,8 +73,8 @@ describe("replace", function() {
 
         var lines = stdout.split("\n");
 
-        console.log(lines)
-//         Assert.equal("8;26 4,42 4", lines[4].split(":")[0]);
+        Assert.equal("1;130 4", lines[1].split(":")[0]);
+        Assert.equal("8;26 4,42 4", lines[4].split(":")[0]);
 
         next();
        });
