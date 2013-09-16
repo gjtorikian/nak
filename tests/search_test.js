@@ -100,18 +100,6 @@ describe("search", function() {
        });
     });
 
-    it("should find matches without case-sensitive regexp, only two file types, and no hidden files (even if they contain the string)",  function(next) {
-       Exec(nakPath + " " + "-a .nakignore -G '*.txt, file*.gif' -i 'shorts' " + basePath, function(err, stdout, stderr) {
-        var output = parseOutput(err, stdout, stderr);
-
-        Assert.equal(output.count, 2);
-        Assert.equal(output.filecount, 2);
-        Assert.equal(output.lines.length, 8);
-
-        next();
-       });
-    });
-
     it("should find matches without regexp, excluding txt files and including hidden ones",  function(next) {
        Exec(nakPath + " " + "-a .nakignore --ignore 'file*.txt' 'williamsburg' -H " + basePath, function(err, stdout, stderr) {
         var output = parseOutput(err, stdout, stderr);
@@ -170,34 +158,82 @@ describe("search", function() {
        });
     });
 
-    // KEEP THESE AT THE END; THE CHANGE ENV VARS FOR THE RUNNER
-    it("should understand what to do with onFilepathSearchFn (as a string)", function(next) {
-       var fn = 'if (/file1\.txt/.test(filepath)) return "photo";\nreturn null;';
+    describe("path inclusion", function(next) {
+      it("should find matches without case-sensitive regexp, only two file types, and no hidden files (even if they contain the string)",  function(next) {
+         Exec(nakPath + " " + "-a .nakignore -G '*.txt, file*.gif' -i 'shorts' " + basePath, function(err, stdout, stderr) {
+          var output = parseOutput(err, stdout, stderr);
 
-       Exec(nakPath + " " + "-a .nakignore 'photo' --onFilepathSearchFn '" + fn + "' " + basePath, function(err, stdout, stderr) {
-        var output = parseOutput(err, stdout, stderr);
+          Assert.equal(output.count, 2);
+          Assert.equal(output.filecount, 2);
+          Assert.equal(output.lines.length, 8);
 
-        Assert.equal(output.count, 5);
-        Assert.equal(output.filecount, 3);
+          next();
+         });
+      });
 
-        next();
-       });
+      it("does not search any directories other than the included directory",  function(next) {
+         Exec(nakPath + " " + "-a .nakignore -G 'newdir/' odd " + basePath, function(err, stdout, stderr) {
+          var output = parseOutput(err, stdout, stderr);
+
+          Assert.equal(output.count, 0);
+          Assert.equal(output.filecount, 0);
+
+          next();
+         });
+      });
+
+      it("only finds results in directories other than the included directory",  function(next) {
+         Exec(nakPath + " " + "-a .nakignore -G 'dir, newdir' needle " + basePath, function(err, stdout, stderr) {
+          var output = parseOutput(err, stdout, stderr);
+
+          Assert.equal(output.count, 1);
+          Assert.equal(output.filecount, 1);
+
+          next();
+         });
+      });
+      it("finds results only in matching file nested within a directory that does not match the pattern",  function(next) {
+         Exec(nakPath + " " + " -G '*.rb' odd " + basePath, function(err, stdout, stderr) {
+          var output = parseOutput(err, stdout, stderr);
+
+          Assert.equal(output.count, 4);
+          Assert.equal(output.filecount, 1);
+
+          next();
+         });
+      });
     });
 
-    it("should understand what to do with onFilepathSearchFn (as a process.env var)", function(next) {
-       var fn = function(filepath) {
-        if (/file1\.txt/.test(filepath)) return "photo";
-        return null;
-       };
+    // KEEP THESE AT THE END; THE CHANGE ENV VARS FOR THE RUNNER
+    describe("onFilePathSearchFn", function(next) {
+      it("should understand what to do with onFilepathSearchFn (as a string)", function(next) {
+         var fn = 'if (/file1\.txt/.test(filepath)) return "photo";\nreturn null;';
 
-       process.env.nak_onFilepathSearchFn = nak.serialize(fn);
+         Exec(nakPath + " " + "-a .nakignore 'photo' --onFilepathSearchFn '" + fn + "' " + basePath, function(err, stdout, stderr) {
+          var output = parseOutput(err, stdout, stderr);
 
-       Exec(nakPath + " " + "-a .nakignore 'photo' " + basePath, function(err, stdout, stderr) {
-        var output = parseOutput(err, stdout, stderr);
+          Assert.equal(output.count, 5);
+          Assert.equal(output.filecount, 3);
 
-        Assert.equal(output.count, 5);
-        Assert.equal(output.filecount, 3);
-        next();
-       });
+          next();
+         });
+      });
+
+      it("should understand what to do with onFilepathSearchFn (as a process.env var)", function(next) {
+         var fn = function(filepath) {
+          if (/file1\.txt/.test(filepath)) return "photo";
+          return null;
+         };
+
+         process.env.nak_onFilepathSearchFn = nak.serialize(fn);
+
+         Exec(nakPath + " " + "-a .nakignore 'photo' " + basePath, function(err, stdout, stderr) {
+          var output = parseOutput(err, stdout, stderr);
+
+          Assert.equal(output.count, 5);
+          Assert.equal(output.filecount, 3);
+          next();
+         });
+      });
     });
 });
