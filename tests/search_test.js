@@ -10,22 +10,7 @@ var nak = require('../lib/nak');
 var nakPath = "node bin/nak";
 //var nakPath = "node build/nak.min";
 
-parseOutput = function(err, stdout, stderr) {
-  if (err || stderr) {
-    console.error(err);
-    console.error(stderr);
-  }
-
-  var lines = stdout.split("\n");
-  var msgLine = lines[lines.length - 2].split(" ");
-
-  return {
-    lines: lines,
-    msgLine: msgLine,
-    count: msgLine[1],
-    filecount: msgLine[4]
-  };
-};
+var parseOutput = require("./test_helpers").parseOutput;
 
 describe("search", function() {
     it("should find matches without regexp, case-sensitive OFF and word boundaries OFF",  function(next) {
@@ -204,7 +189,7 @@ describe("search", function() {
       });
     });
 
-    // KEEP THESE AT THE END; THE CHANGE ENV VARS FOR THE RUNNER
+    // KEEP THESE AT THE END; THEY CHANGE ENV VARS FOR THE RUNNER
     describe("onFilePathSearchFn", function(next) {
       it("should understand what to do with onFilepathSearchFn (as a string)", function(next) {
          var fn = 'if (/file1\.txt/.test(filepath)) return "photo";\nreturn null;';

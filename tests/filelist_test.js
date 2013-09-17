@@ -8,14 +8,16 @@ var basePath = __dirname + "/filelist_fixtures";
 var nakPath = "node bin/nak";
 //var nakPath = "node build/nak.min";
 
+var parseOutput = require("./test_helpers").parseOutput;
+
 describe("filelist", function() {
     it("should get filelist, including hidden files and binaries",  function(next) {
        Exec(nakPath + " -l -H -a ../.nakignore " + basePath, function(err, stdout, stderr) {
-        if (err || stderr) {
-            console.error(err);
-            console.error(stderr);
-        }
-        var files = stdout.split("\n").filter(function(file) { return !!file; }).sort();
+        var output = parseOutput(err, stdout, stderr);
+
+        var lines = output.lines;
+
+        var files = lines.filter(function(file) { return !!file; }).sort();
 
         Assert.equal(files.length, 14);
         Assert.equal(files[8], basePath + "/level1/Toasty.gif");
@@ -28,11 +30,11 @@ describe("filelist", function() {
 
     it("should get filelist, including symlinks, hidden files, and binaries",  function(next) {
        Exec(nakPath + " -l -H -a ../.nakignore -f " + basePath, function(err, stdout, stderr) {
-        if (err || stderr) {
-            console.error(err);
-            console.error(stderr);
-        }
-        var files = stdout.split("\n").filter(function(file) { return !!file; }).sort();
+        var output = parseOutput(err, stdout, stderr);
+
+        var lines = output.lines;
+
+        var files = lines.filter(function(file) { return !!file; }).sort();
 
         Assert.equal(files.length, 15);
         Assert.equal(files[14], basePath + "/symlink-to-1.txt");
@@ -43,11 +45,11 @@ describe("filelist", function() {
 
     it("should get filelist, without hidden files",  function(next) {
        Exec(nakPath + " -l -a ../.nakignore " + basePath, function(err, stdout, stderr) {
-        if (err || stderr) {
-            console.error(err);
-            console.error(stderr);
-        }
-        var files = stdout.split("\n").filter(function(file) { return !!file; }).sort();
+        var output = parseOutput(err, stdout, stderr);
+
+        var lines = output.lines;
+
+        var files = lines.filter(function(file) { return !!file; }).sort();
 
         Assert.equal(files[3], basePath + "/level1/level2/level2.rb");
         Assert.equal(files[4], basePath + "/level1/level2/level3/level4/level4.txt");
@@ -58,11 +60,11 @@ describe("filelist", function() {
 
     it("ignores symlinks to files/folders that don't exist", function(next) {
       Exec(nakPath + " -f -l -a ../.nakignore -G symlink-to-nowhere.txt " + basePath, function(err, stdout, stderr) {
-       if (err || stderr) {
-           console.error(err);
-           console.error(stderr);
-       }
-       var files = stdout.split("\n").filter(function(file) { return !!file; }).sort();
+       var output = parseOutput(err, stdout, stderr);
+
+       var lines = output.lines;
+
+       var files = lines.filter(function(file) { return !!file; }).sort();
        Assert.equal(files.length, 0);
 
        next();
@@ -71,11 +73,11 @@ describe("filelist", function() {
 
     it("should get filelist, even for a starting hidden dir",  function(next) {
        Exec(nakPath + " -l -a ../.nakignore " + basePath + "/.root", function(err, stdout, stderr) {
-        if (err || stderr) {
-            console.error(err);
-            console.error(stderr);
-        }
-        var files = stdout.split("\n").filter(function(file) { return !!file; }).sort();
+        var output = parseOutput(err, stdout, stderr);
+
+        var lines = output.lines;
+
+        var files = lines.filter(function(file) { return !!file; }).sort();
 
         Assert.equal(files.length, 5);
         Assert.equal(files[2], basePath + "/.root/p.txt");
@@ -87,11 +89,11 @@ describe("filelist", function() {
 
     it("should get filelist, and hidden files, even for a starting hidden dir",  function(next) {
        Exec(nakPath + " -l -a ../.nakignore --hidden " + basePath + "/.root", function(err, stdout, stderr) {
-        if (err || stderr) {
-            console.error(err);
-            console.error(stderr);
-        }
-        var files = stdout.split("\n").filter(function(file) { return !!file; }).sort();
+        var output = parseOutput(err, stdout, stderr);
+
+        var lines = output.lines;
+
+        var files = lines.filter(function(file) { return !!file; }).sort();
 
         Assert.equal(files.length, 6);
         Assert.equal(files[2], basePath + "/.root/p.txt");
