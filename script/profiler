@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+./node_modules/profiler/tools/build-nprof
+
+node --prof bin/nak 'var' .
+
+./node_modules/profiler/nprof > profilier.txt
