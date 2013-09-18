@@ -17,3 +17,4 @@ benchmark/ag
 build/
 test_script.js
 tests/replace_fixtures/files/
+profiler.txt
