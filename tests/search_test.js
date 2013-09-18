@@ -14,7 +14,7 @@ var parseOutput = require("./test_helpers").parseOutput;
 
 describe("search", function() {
     it("should find matches without regexp, case-sensitive OFF and word boundaries OFF",  function(next) {
-       Exec(nakPath + " " + "-a .nakignore -i -q 'sriracha' " + basePath, function(err, stdout, stderr) {
+       Exec(nakPath + " -a .nakignore -i -q 'sriracha' " + basePath, function(err, stdout, stderr) {
         var output = parseOutput(err, stdout, stderr);
 
         Assert.equal(output.count, 8);
@@ -26,7 +26,7 @@ describe("search", function() {
     });
 
     it("should find matches without regexp, follow ON, case-sensitive OFF and word boundaries OFF",  function(next) {
-       Exec(nakPath + " " + "-f -a .nakignore -i -q 'sriracha' " + basePath, function(err, stdout, stderr) {
+       Exec(nakPath + " -f -a .nakignore -i -q 'sriracha' " + basePath, function(err, stdout, stderr) {
         var output = parseOutput(err, stdout, stderr);
 
         Assert.equal(output.count, 9);
@@ -38,7 +38,7 @@ describe("search", function() {
     });
 
     it("should find matches without regexp, case-sensitive ON and word boundaries OFF",  function(next) {
-       Exec(nakPath + " " + "-a .nakignore -q 'Messenger' " + basePath, function(err, stdout, stderr) {
+       Exec(nakPath + " -a .nakignore -q 'Messenger' " + basePath, function(err, stdout, stderr) {
         var output = parseOutput(err, stdout, stderr);
 
         Assert.equal(output.count, 2);
@@ -50,7 +50,7 @@ describe("search", function() {
     });
 
     it("should find matches without regexp, case-sensitive OFF and word boundaries ON",  function(next) {
-       Exec(nakPath + " " + "-a .nakignore -q -w 'gastro' " + basePath, function(err, stdout, stderr) {
+       Exec(nakPath + " -a .nakignore -q -w 'gastro' " + basePath, function(err, stdout, stderr) {
         var output = parseOutput(err, stdout, stderr);
 
         Assert.equal(output.count, 3);
@@ -62,7 +62,7 @@ describe("search", function() {
     });
 
     it("should find matches with a regexp, case-sensitive OFF",  function(next) {
-       Exec(nakPath + " " + "-a .nakignore -i 'pb.' " + basePath, function(err, stdout, stderr) {
+       Exec(nakPath + " -a .nakignore -i 'pb.' " + basePath, function(err, stdout, stderr) {
         var output = parseOutput(err, stdout, stderr);
 
         Assert.equal(output.count, 8);
@@ -74,7 +74,7 @@ describe("search", function() {
     });
 
     it("should find matches with a regexp, case-sensitive ON, including the default .nakignore file, and hidden files",  function(next) {
-       Exec(nakPath + " " + "-a .nakignore -H '.+wave' " + basePath, function(err, stdout, stderr) {
+       Exec(nakPath + " -a .nakignore -H '.+wave' " + basePath, function(err, stdout, stderr) {
         var output = parseOutput(err, stdout, stderr);
 
         Assert.equal(output.count, 17);
@@ -86,7 +86,7 @@ describe("search", function() {
     });
 
     it("should find matches without regexp, excluding txt files and including hidden ones",  function(next) {
-       Exec(nakPath + " " + "-a .nakignore --ignore 'file*.txt' 'williamsburg' -H " + basePath, function(err, stdout, stderr) {
+       Exec(nakPath + " -a .nakignore --ignore 'file*.txt' 'williamsburg' -H " + basePath, function(err, stdout, stderr) {
         var output = parseOutput(err, stdout, stderr);
 
         Assert.equal(output.count, 15);
@@ -98,7 +98,7 @@ describe("search", function() {
     });
 
     it("should report multiple matches in same line using ackmate",  function(next) {
-       Exec(nakPath + " " + "-a .nakignore --ackmate 'wolf' " + basePath, function(err, stdout, stderr) {
+       Exec(nakPath + " -a .nakignore --ackmate 'wolf' " + basePath, function(err, stdout, stderr) {
         var output = parseOutput(err, stdout, stderr);
 
         Assert.equal("8;26 4,42 4", output.lines[4].split(":")[0]);
@@ -109,7 +109,7 @@ describe("search", function() {
 
     // see: http://me.dt.in.th/page/StringDecoder
     it("should find incomplete thai characters",  function(next) {
-       Exec(nakPath + " " + "-a .nakignore 'ร' " + basePath, function(err, stdout, stderr) {
+       Exec(nakPath + " -a .nakignore 'ร' " + basePath, function(err, stdout, stderr) {
         var output = parseOutput(err, stdout, stderr);
 
         Assert.equal(output.count, 1);
@@ -121,7 +121,7 @@ describe("search", function() {
     });
 
     it("should find matches without regexp, in a starting hidden dir",  function(next) {
-       Exec(nakPath + " " + "-f -a .nakignore -i -q 'sriracha' " + basePath + "/.root", function(err, stdout, stderr) {
+       Exec(nakPath + " -f -a .nakignore -i -q 'sriracha' " + basePath + "/.root", function(err, stdout, stderr) {
         var output = parseOutput(err, stdout, stderr);
 
         Assert.equal(output.count, 4);
@@ -133,7 +133,7 @@ describe("search", function() {
     });
 
     it("should not find matches in secondary directories, while ignoring VCS",  function(next) {
-       Exec(nakPath + " " + "-f -a .nakignore --addVCSIgnores -i -q 'farn' " + basePath, function(err, stdout, stderr) {
+       Exec(nakPath + " -f -a .nakignore --addVCSIgnores -i -q 'farn' " + basePath, function(err, stdout, stderr) {
         var output = parseOutput(err, stdout, stderr);
 
         Assert.equal(output.count, 0);
@@ -145,7 +145,7 @@ describe("search", function() {
 
     describe("path inclusion", function(next) {
       it("should find matches without case-sensitive regexp, only two file types, and no hidden files (even if they contain the string)",  function(next) {
-         Exec(nakPath + " " + "-a .nakignore -G '*.txt, file*.gif' -i 'shorts' " + basePath, function(err, stdout, stderr) {
+         Exec(nakPath + " -a .nakignore -G '*.txt, file*.gif' -i 'shorts' " + basePath, function(err, stdout, stderr) {
           var output = parseOutput(err, stdout, stderr);
 
           Assert.equal(output.count, 2);
@@ -157,7 +157,7 @@ describe("search", function() {
       });
 
       it("does not search any directories other than the included directory",  function(next) {
-         Exec(nakPath + " " + "-a .nakignore -G 'newdir/' odd " + basePath, function(err, stdout, stderr) {
+         Exec(nakPath + " -a .nakignore -G 'newdir/' odd " + basePath, function(err, stdout, stderr) {
           var output = parseOutput(err, stdout, stderr);
 
           Assert.equal(output.count, 0);
@@ -168,7 +168,7 @@ describe("search", function() {
       });
 
       it("only finds results in directories other than the included directory",  function(next) {
-         Exec(nakPath + " " + "-a .nakignore -G 'dir, newdir' needle " + basePath, function(err, stdout, stderr) {
+         Exec(nakPath + " -a .nakignore -G 'dir, newdir' needle " + basePath, function(err, stdout, stderr) {
           var output = parseOutput(err, stdout, stderr);
 
           Assert.equal(output.count, 1);
@@ -178,7 +178,7 @@ describe("search", function() {
          });
       });
       it("finds results only in matching file nested within a directory that does not match the pattern",  function(next) {
-         Exec(nakPath + " " + " -G '*.rb' odd " + basePath, function(err, stdout, stderr) {
+         Exec(nakPath + " -G '*.rb' odd " + basePath, function(err, stdout, stderr) {
           var output = parseOutput(err, stdout, stderr);
 
           Assert.equal(output.count, 4);
@@ -194,7 +194,7 @@ describe("search", function() {
       it("should understand what to do with onFilepathSearchFn (as a string)", function(next) {
          var fn = 'if (/file1\.txt/.test(filepath)) return "photo";\nreturn null;';
 
-         Exec(nakPath + " " + "-a .nakignore 'photo' --onFilepathSearchFn '" + fn + "' " + basePath, function(err, stdout, stderr) {
+         Exec(nakPath + " -a .nakignore 'photo' --onFilepathSearchFn '" + fn + "' " + basePath, function(err, stdout, stderr) {
           var output = parseOutput(err, stdout, stderr);
 
           Assert.equal(output.count, 5);
@@ -212,7 +212,7 @@ describe("search", function() {
 
          process.env.nak_onFilepathSearchFn = nak.serialize(fn);
 
-         Exec(nakPath + " " + "-a .nakignore 'photo' " + basePath, function(err, stdout, stderr) {
+         Exec(nakPath + " -a .nakignore 'photo' " + basePath, function(err, stdout, stderr) {
           var output = parseOutput(err, stdout, stderr);
 
           Assert.equal(output.count, 5);

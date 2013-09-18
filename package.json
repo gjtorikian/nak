@@ -17,7 +17,8 @@
         "uglify-js": "2.3.5",
         "execSync": "0.0.4",
         "mocha": "1.10.0",
-        "wrench": "1.5.1"
+        "wrench": "1.5.1",
+        "nprof": ""
     },
     "bin": { "nak": "./bin/nak" },
     "main": "./lib/nak",
