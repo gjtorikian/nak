@@ -1,6 +1,6 @@
 {
     "name": "nak",
-    "version": "0.2.19",
+    "version": "0.2.20",
     "description": "ack and ag inspired tool written in Node. Designed to be fast.",
     "keywords": ["ag", "ack", "grep", "search"],
     "author": "Garen J. Torikian <gjtorikian@gmail.com>",
