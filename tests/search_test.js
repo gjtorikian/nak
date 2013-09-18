@@ -177,6 +177,7 @@ describe("search", function() {
           next();
          });
       });
+
       it("finds results only in matching file nested within a directory that does not match the pattern",  function(next) {
          Exec(nakPath + " -G '*.rb' odd " + basePath, function(err, stdout, stderr) {
           var output = parseOutput(err, stdout, stderr);
