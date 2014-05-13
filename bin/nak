@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require('../lib/nak').run()
+require('../lib/nak').run();
