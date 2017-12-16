@@ -136,7 +136,7 @@ way to provide ignore rules.
 
 # Testing
 
-All tests can be found in _tests_; they use [`mocha`](http://visionmedia.github.com/mocha/) 
+All tests can be found in _tests_; they use [`mocha`](http://mochajs.org/) 
 to run. To run them:
 
 ```
