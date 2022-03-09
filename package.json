@@ -22,12 +22,8 @@
     },
     "devDependencies": {
         "mocha": "^9.2.1",
-        "uglify-js": "2.3.5"
-    },
-    "optionalDependencies": {
-        "execSync": "0.0.4",
         "wrench": "1.5.1",
-        "nprof": ""
+        "uglify-js": "2.3.5"
     },
     "bin": {
         "nak": "./bin/nak"
