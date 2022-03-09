@@ -22,7 +22,7 @@
     },
     "devDependencies": {
         "mocha": "^9.2.1",
-        "uglify-js": "2.3.5",
+        "uglify-js": "^3.15.2",
         "wrench": "1.5.1"
     },
     "bin": {
