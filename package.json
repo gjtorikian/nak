@@ -21,13 +21,13 @@
         "colors": "0.6.2"
     },
     "devDependencies": {
-        "mocha": "^9.2.1",
-        "uglify-js": "^3.15.2",
-        "wrench": "1.5.1"
+        "uglify-js": "2.3.5",
+        "execSync": "0.0.4",
+        "mocha": "1.10.0",
+        "wrench": "1.5.1",
+        "nprof": ""
     },
-    "bin": {
-        "nak": "./bin/nak"
-    },
+    "bin": { "nak": "./bin/nak" },
     "main": "./lib/nak",
     "engines": {
         "node": ">= 0.8.x"
