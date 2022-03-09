@@ -221,5 +221,22 @@ describe("search", function() {
           next();
          });
       });
+
+      it("should understand what to do with onFilepathSearchFn (es6 arrow function)", function(next) {
+         var fn = (filepath) => {
+          if (/file1\.txt/.test(filepath)) return "photo";
+          return null;
+         };
+
+         process.env.nak_onFilepathSearchFn = nak.serialize(fn);
+
+         Exec(nakPath + " -a .nakignore 'photo' " + basePath, function(err, stdout, stderr) {
+          var output = parseOutput(err, stdout, stderr);
+
+          Assert.equal(output.count, 5);
+          Assert.equal(output.filecount, 3);
+          next();
+         });
+      });
     });
 });

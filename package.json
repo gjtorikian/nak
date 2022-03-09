@@ -16,14 +16,14 @@
         }
     ],
     "dependencies": {
+        "json-fn": "^1.1.1",
         "isbinaryfile": "2.0.0",
-        "simplefunc": "0.0.2",
         "colors": "0.6.2"
     },
     "devDependencies": {
         "mocha": "^9.2.1",
-        "wrench": "1.5.1",
-        "uglify-js": "2.3.5"
+        "uglify-js": "2.3.5",
+        "wrench": "1.5.1"
     },
     "bin": {
         "nak": "./bin/nak"
