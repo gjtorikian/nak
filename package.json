@@ -2,30 +2,43 @@
     "name": "nak",
     "version": "0.3.3",
     "description": "ack and ag inspired tool written in Node. Designed to be fast.",
-    "keywords": ["ag", "ack", "grep", "search"],
+    "keywords": [
+        "ag",
+        "ack",
+        "grep",
+        "search"
+    ],
     "author": "Garen J. Torikian <gjtorikian@gmail.com>",
-    "contributors": [{
-      "name": "Kevin Sawicki",
-      "email": "kevin@github.com"
-    }],
+    "contributors": [
+        {
+            "name": "Kevin Sawicki",
+            "email": "kevin@github.com"
+        }
+    ],
     "dependencies": {
         "isbinaryfile": "2.0.0",
         "simplefunc": "0.0.2",
         "colors": "0.6.2"
     },
     "devDependencies": {
-        "uglify-js": "2.3.5",
+        "mocha": "^9.2.1",
+        "uglify-js": "2.3.5"
+    },
+    "optionalDependencies": {
         "execSync": "0.0.4",
-        "mocha": "1.10.0",
         "wrench": "1.5.1",
         "nprof": ""
     },
-    "bin": { "nak": "./bin/nak" },
+    "bin": {
+        "nak": "./bin/nak"
+    },
     "main": "./lib/nak",
-    "engines": { "node": ">= 0.8.x" },
-    "repository" :
-    { "type" : "git",
-      "url" : "http://github.com/gjtorikian/nak.git"
+    "engines": {
+        "node": ">= 0.8.x"
+    },
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/gjtorikian/nak.git"
     },
     "scripts": {
         "test": "mocha tests/test_runner.js"
