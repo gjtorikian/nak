@@ -37,6 +37,6 @@
         "url": "http://github.com/gjtorikian/nak.git"
     },
     "scripts": {
-        "test": "mocha tests/test_runner.js"
+        "test": "mocha tests/**_test.js"
     }
 }
