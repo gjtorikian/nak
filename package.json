@@ -1,42 +1,44 @@
 {
-    "name": "nak",
-    "version": "0.3.3",
-    "description": "ack and ag inspired tool written in Node. Designed to be fast.",
-    "keywords": [
-        "ag",
-        "ack",
-        "grep",
-        "search"
-    ],
-    "author": "Garen J. Torikian <gjtorikian@gmail.com>",
-    "contributors": [
-        {
-            "name": "Kevin Sawicki",
-            "email": "kevin@github.com"
-        }
-    ],
-    "dependencies": {
-        "json-fn": "^1.1.1",
-        "isbinaryfile": "2.0.0",
-        "colors": "0.6.2"
-    },
-    "devDependencies": {
-        "mocha": "^9.2.1",
-        "uglify-js": "^3.15.2",
-        "wrench": "1.5.1"
-    },
-    "bin": {
-        "nak": "./bin/nak"
-    },
-    "main": "./lib/nak",
-    "engines": {
-        "node": ">= 0.8.x"
-    },
-    "repository": {
-        "type": "git",
-        "url": "http://github.com/gjtorikian/nak.git"
-    },
-    "scripts": {
-        "test": "mocha tests/**_test.js"
+  "name": "nak",
+  "version": "0.3.3",
+  "description": "ack and ag inspired tool written in Node. Designed to be fast.",
+  "keywords": [
+    "ag",
+    "ack",
+    "grep",
+    "search"
+  ],
+  "author": "Garen J. Torikian <gjtorikian@gmail.com>",
+  "contributors": [
+    {
+      "name": "Kevin Sawicki",
+      "email": "kevin@github.com"
     }
+  ],
+  "dependencies": {
+    "colors": "0.6.2",
+    "isbinaryfile": "2.0.0",
+    "json-fn": "^1.1.1"
+  },
+  "devDependencies": {
+    "mocha": "^9.2.1",
+    "release-it": "^14.12.5",
+    "uglify-js": "^3.15.2",
+    "wrench": "1.5.1"
+  },
+  "bin": {
+    "nak": "./bin/nak"
+  },
+  "main": "./lib/nak",
+  "engines": {
+    "node": ">= 0.8.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/gjtorikian/nak.git"
+  },
+  "scripts": {
+    "test": "mocha tests/**_test.js",
+    "release": "release-it"
+  }
 }
