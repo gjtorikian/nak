@@ -1,6 +1,6 @@
 {
   "name": "nak",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "ack and ag inspired tool written in Node. Designed to be fast.",
   "keywords": [
     "ag",
